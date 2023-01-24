@@ -1,0 +1,35 @@
+{
+	"$schema": "https://www.krakend.io/schema/v3.json",
+	"version": 3,
+	"debug_endpoint": true,
+	"extra_config": {
+		"github_com/devopsfaith/krakend/transport/http/server/handler": {
+			"name": ["basic-auth"]
+		},
+		"auth/api-keys": {}
+	},
+	"tls":{
+		"public_key": "/path/to/cert.pem",
+    	"private_key": "/path/to/key.pem",
+    	"disabled": true
+	},
+	"disable_rest":true,
+	"allow_insecure_connections":true,
+	"endpoints": [{
+		"endpoint": "/protected/resource",
+		"timeout": "140s",
+		"extra_config": {
+			"github.com/devopsfaith/krakend-jose/validator": {
+				"alg": "RS256",
+				"audience": ["http://api.example.com"],
+				"roles_key": "http://api.example.com/custom/roles",
+				"roles": ["user", "admin"],
+				"jwk_url": "https://albert-test.auth0.com/.well-known/jwks.json",
+				"cache": true
+			}
+		},
+		"backend": [{
+			"url_pattern": "/"
+		}]
+	}]
+}
