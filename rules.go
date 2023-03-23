@@ -17,12 +17,28 @@ import (
 	server "github.com/luraproject/lura/v2/transport/http/server/plugin"
 )
 
-func hasBit(x float64, y int) bool {
-	return (int(x)>>y)&1 == 1
+func hasBit(x int, y int) bool {
+	return (x>>y)&1 == 1
 }
 
 func hasBasicAuth(s *Service) bool {
-	return len(s.Components[server.Namespace]) > 0 && hasBit(float64(s.Components[server.Namespace][0]), parseServerPlugin("basic-auth"))
+	// check basic auth in plugin
+	if len(s.Components[server.Namespace]) > 0 && hasBit(s.Components[server.Namespace][0], parseServerPlugin("basic-auth")) {
+		// old plugin basic auth
+		return true
+	}
+	if len(s.Components["auth/basic"]) > 0 && hasBit(s.Components["auth/basic"][0], 1) {
+		// main server config has auth/basic enabled
+		return true
+	}
+
+	for _, e := range s.Endpoints {
+		if len(e.Components["auth/basic"]) > 0 && hasBit(e.Components["auth/basic"][0], 1) {
+			return true
+		}
+	}
+
+	return false
 }
 
 func hasApiKeys(s *Service) bool {
@@ -40,15 +56,15 @@ func hasNoJWT(s *Service) bool {
 }
 
 func hasInsecureConnections(s *Service) bool {
-	return hasBit(float64(s.Details[0]), ServiceAllowInsecureConnections)
+	return hasBit(s.Details[0], ServiceAllowInsecureConnections)
 }
 
 func hasNoTLS(s *Service) bool {
-	return !hasBit(float64(s.Details[0]), ServiceHasTLS)
+	return !hasBit(s.Details[0], ServiceHasTLS)
 }
 
 func hasTLSDisabled(s *Service) bool {
-	return hasBit(float64(s.Details[0]), ServiceHasTLS) && !hasBit(float64(s.Details[0]), ServiceTLSEnabled)
+	return hasBit(s.Details[0], ServiceHasTLS) && !hasBit(s.Details[0], ServiceTLSEnabled)
 }
 
 func hasNoHTTPSecure(s *Service) bool {
@@ -56,12 +72,47 @@ func hasNoHTTPSecure(s *Service) bool {
 	return !ok
 }
 
+func hasH2C(s *Service) bool {
+	v, ok := s.Components[router.Namespace]
+	if !ok || len(v) == 0 {
+		return true
+	}
+	return hasBit(v[0], RouterUseH2C)
+}
+
+func hasEndpointWildcard(s *Service) bool {
+	for _, e := range s.Endpoints {
+		if hasBit(e.Details[4], 1) {
+			return true
+		}
+	}
+	return false
+}
+
+func hasQueryStringWildcard(s *Service) bool {
+	for _, e := range s.Endpoints {
+		if hasBit(e.Details[4], 2) {
+			return true
+		}
+	}
+	return false
+}
+
+func hasHeadersWildcard(s *Service) bool {
+	for _, e := range s.Endpoints {
+		if hasBit(e.Details[4], 4) {
+			return true
+		}
+	}
+	return false
+}
+
 func hasNoObfuscatedVersionHeader(s *Service) bool {
 	v, ok := s.Components[router.Namespace]
 	if !ok || len(v) == 0 {
 		return true
 	}
-	return !hasBit(float64(v[0]), RouterHideVersionHeader)
+	return !hasBit(v[0], RouterHideVersionHeader)
 }
 
 func hasNoCORS(s *Service) bool {
@@ -171,11 +222,15 @@ func hasNoLogging(s *Service) bool {
 }
 
 func hasRestfulDisabled(s *Service) bool {
-	return hasBit(float64(s.Details[0]), ServiceDisableStrictREST)
+	return hasBit(s.Details[0], ServiceDisableStrictREST)
 }
 
 func hasDebugEnabled(s *Service) bool {
-	return hasBit(float64(s.Details[0]), ServiceDebug)
+	return hasBit(s.Details[0], ServiceDebug)
+}
+
+func hasEchoEnabled(s *Service) bool {
+	return hasBit(s.Details[0], ServiceEcho)
 }
 
 func hasEndpointWithoutBackends(s *Service) bool {
@@ -198,7 +253,7 @@ func hasASingleBackendPerEndpoint(s *Service) bool {
 
 func hasAllEndpointsAsNoop(s *Service) bool {
 	for _, e := range s.Endpoints {
-		if !hasBit(float64(e.Details[0]), EncodingNOOP) {
+		if !hasBit(e.Details[0], EncodingNOOP) {
 			return false
 		}
 	}
@@ -206,5 +261,5 @@ func hasAllEndpointsAsNoop(s *Service) bool {
 }
 
 func hasSequentialStart(s *Service) bool {
-	return hasBit(float64(s.Details[0]), ServiceSequentialStart) && len(s.Agents) >= 10
+	return hasBit(s.Details[0], ServiceSequentialStart) && len(s.Agents) >= 10
 }

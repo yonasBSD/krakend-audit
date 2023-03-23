@@ -119,6 +119,7 @@ const (
 	ServiceTLSEnableMTLS
 	ServiceTLSDisableSystemCaPool
 	ServiceTLSCaCerts
+	ServiceEcho
 )
 
 const (
@@ -159,4 +160,5 @@ const (
 	RouterMaxMultipartMemory
 	RouterLoggerSkipPaths
 	RouterHideVersionHeader
+	RouterUseH2C
 )

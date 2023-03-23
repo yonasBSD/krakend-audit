@@ -17,7 +17,7 @@ require (
 	github.com/krakendio/krakend-ratelimit/v2 v2.0.4
 	github.com/krakendio/krakend-rss/v2 v2.0.1
 	github.com/krakendio/krakend-xml/v2 v2.0.1
-	github.com/luraproject/lura/v2 v2.2.3
+	github.com/luraproject/lura/v2 v2.2.5
 )
 
 require (
@@ -127,11 +127,11 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	gocloud.dev v0.25.0 // indirect
 	gocloud.dev/secrets/hashivault v0.25.0 // indirect
-	golang.org/x/crypto v0.0.0-20220331220935-ae2d96664a29 // indirect
-	golang.org/x/net v0.4.0 // indirect
+	golang.org/x/crypto v0.1.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20220309155454-6242fa91716a // indirect
-	golang.org/x/sys v0.3.0 // indirect
-	golang.org/x/text v0.5.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/time v0.0.0-20220224211638-0e9765cccd65 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/api v0.74.0 // indirect

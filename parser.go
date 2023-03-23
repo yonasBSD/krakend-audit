@@ -1,6 +1,7 @@
 package audit
 
 import (
+	"strings"
 	"time"
 
 	bf "github.com/krakendio/bloomfilter/v2/krakend"
@@ -58,6 +59,10 @@ func Parse(cfg *config.ServiceConfig) Service {
 		}
 	}
 
+	if cfg.Echo {
+		v1 = addBit(v1, ServiceEcho)
+	}
+
 	return Service{
 		Details:    []int{v1},
 		Agents:     parseAsyncAgents(cfg.AsyncAgents),
@@ -88,12 +93,29 @@ func parseAsyncAgents(as []*config.AsyncAgent) []Agent {
 func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
 	endpoints := []Endpoint{}
 	for _, e := range es {
+		wildcards := 0
+		if strings.HasSuffix(e.Endpoint, "*") {
+			wildcards = 1
+		}
+		for _, s := range e.QueryString {
+			if s == "*" {
+				wildcards = wildcards | 2
+				break
+			}
+		}
+		for _, s := range e.HeadersToPass {
+			if s == "*" {
+				wildcards = wildcards | 4
+				break
+			}
+		}
 		endpoint := Endpoint{
 			Details: []int{
 				parseEncoding(e.OutputEncoding),
 				len(e.QueryString),
 				len(e.HeadersToPass),
 				int(e.Timeout / time.Millisecond),
+				wildcards,
 			},
 			Backends:   parseBackends(e.Backend),
 			Components: parseComponents(e.ExtraConfig),
@@ -332,7 +354,8 @@ func parseComponents(cfg config.ExtraConfig) Component {
 			}
 
 			components[c] = []int{v1}
-
+		case "auth/basic":
+			components[c] = []int{1}
 		default:
 			components[c] = []int{}
 		}
@@ -428,6 +451,11 @@ func parseRouter(cfg config.ExtraConfig) int {
 	v, ok = cfg["hide_version_header"].(bool)
 	if ok && v {
 		res = addBit(res, RouterHideVersionHeader)
+	}
+
+	v, ok = cfg["use_h2c"].(bool)
+	if ok && v {
+		res = addBit(res, RouterUseH2C)
 	}
 
 	return res
