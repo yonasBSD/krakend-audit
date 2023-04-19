@@ -27,13 +27,13 @@ func hasBasicAuth(s *Service) bool {
 		// old plugin basic auth
 		return true
 	}
-	if len(s.Components["auth/basic"]) > 0 && hasBit(s.Components["auth/basic"][0], 1) {
+	if len(s.Components["auth/basic"]) > 0 && hasBit(s.Components["auth/basic"][0], 0) {
 		// main server config has auth/basic enabled
 		return true
 	}
 
 	for _, e := range s.Endpoints {
-		if len(e.Components["auth/basic"]) > 0 && hasBit(e.Components["auth/basic"][0], 1) {
+		if len(e.Components["auth/basic"]) > 0 && hasBit(e.Components["auth/basic"][0], 0) {
 			return true
 		}
 	}
@@ -75,14 +75,14 @@ func hasNoHTTPSecure(s *Service) bool {
 func hasH2C(s *Service) bool {
 	v, ok := s.Components[router.Namespace]
 	if !ok || len(v) == 0 {
-		return true
+		return false
 	}
 	return hasBit(v[0], RouterUseH2C)
 }
 
 func hasEndpointWildcard(s *Service) bool {
 	for _, e := range s.Endpoints {
-		if hasBit(e.Details[4], 1) {
+		if hasBit(e.Details[4], 0) {
 			return true
 		}
 	}
@@ -91,7 +91,7 @@ func hasEndpointWildcard(s *Service) bool {
 
 func hasQueryStringWildcard(s *Service) bool {
 	for _, e := range s.Endpoints {
-		if hasBit(e.Details[4], 2) {
+		if hasBit(e.Details[4], 1) {
 			return true
 		}
 	}
@@ -100,7 +100,7 @@ func hasQueryStringWildcard(s *Service) bool {
 
 func hasHeadersWildcard(s *Service) bool {
 	for _, e := range s.Endpoints {
-		if hasBit(e.Details[4], 4) {
+		if hasBit(e.Details[4], 2) {
 			return true
 		}
 	}

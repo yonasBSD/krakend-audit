@@ -28,18 +28,18 @@ func ExampleAudit() {
 	}
 
 	// output:
-	// 00: 2.1.3 CRITICAL  	Ensure your TLS is enabled.
-	// 01: 2.1.7 HIGH  	Ensure you enable HTTP security header checks (security/http).
-	// 02: 2.2.1 MEDIUM  	Ensure that the version banner is hidden in runtime.
-	// 03: 2.2.2 HIGH  	Ensure that CORS is enabled.
-	// 04: 3.1.1 MEDIUM  	Ensure that the Bot detector is enabled.
+	// 00: 2.1.3 CRITICAL  	TLS is configured but its disable flag prevents from using it.
+	// 01: 2.1.7 HIGH  	Enable HTTP security header checks (security/http).
+	// 02: 2.2.1 MEDIUM  	Hide the version banner in runtime.
+	// 03: 2.2.2 HIGH  	Enable CORS.
+	// 04: 3.1.1 MEDIUM  	Enable a bot detector.
 	// 05: 3.1.2 MEDIUM  	Ensure you enable some rate-limiting strategy and avoid having an All-You-Can-Eat API.
 	// 06: 3.1.3 MEDIUM  	Ensure you protect your backends with a circuit breaker.
 	// 07: 3.3.2 MEDIUM  	Ensure that your timeouts are below 5 seconds.
-	// 08: 3.3.3 HIGH  	Ensure that your timeouts are below 30 seconds.
-	// 09: 3.3.4 CRITICAL  	Ensure that your timeouts are below 60 seconds.
-	// 10: 4.1.1 MEDIUM  	Ensure that you have some telemetry system for metrics.
-	// 11: 4.2.1 MEDIUM  	Ensure that you have some telemetry system for tracing.
-	// 12: 4.3.1 MEDIUM  	Ensure that you have the improved logging component, which improves log parsing.
+	// 08: 3.3.3 HIGH  	Set timeouts to below 30 seconds for improved performance.
+	// 09: 3.3.4 CRITICAL  	Set timeouts to below 1 minute for improved performance.
+	// 10: 4.1.1 MEDIUM  	Implement a telemetry system for collecting metrics for monitoring and troubleshooting.
+	// 11: 4.2.1 MEDIUM  	Implement a telemetry system for tracing for monitoring and troubleshooting.
+	// 12: 4.3.1 MEDIUM  	Use the improved logging component for better log parsing.
 
 }
