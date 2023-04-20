@@ -17,7 +17,7 @@ import (
 	server "github.com/luraproject/lura/v2/transport/http/server/plugin"
 )
 
-func hasBit(x int, y int) bool {
+func hasBit(x, y int) bool {
 	return (x>>y)&1 == 1
 }
 

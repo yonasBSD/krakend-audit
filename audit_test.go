@@ -13,6 +13,7 @@ func TestAudit_all(t *testing.T) {
 			"1.1.2",
 			"2.1.3",
 			"2.1.7",
+			"2.1.8",
 			"2.2.1",
 			"2.2.2",
 			"2.2.3",
@@ -42,6 +43,7 @@ func TestAudit_exclude(t *testing.T) {
 		expectedRecommendations: []string{
 			"2.1.3",
 			"2.1.7",
+			"2.1.8",
 			"2.2.1",
 			"2.2.2",
 			"2.2.3",
