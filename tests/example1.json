@@ -2,10 +2,14 @@
 	"$schema": "https://www.krakend.io/schema/v3.json",
 	"version": 3,
 	"debug_endpoint": true,
+	"echo_endpoint": true,
 	"extra_config": {
 		"github_com/devopsfaith/krakend/transport/http/server/handler": {
 			"name": ["basic-auth"]
 		},
+        "github_com/luraproject/lura/router/gin": {
+            "use_h2c": true
+        },
 		"auth/api-keys": {}
 	},
 	"tls":{
@@ -27,6 +31,17 @@
 				"jwk_url": "https://albert-test.auth0.com/.well-known/jwks.json",
 				"cache": true
 			}
+		},
+		"backend": [{
+			"url_pattern": "/"
+		}]
+	},
+	{
+		"endpoint": "/wildcarded/resource/*",
+		"timeout": "10s",
+        "input_query_strings": ["*"],
+        "input_headers": ["*"],
+		"extra_config": {
 		},
 		"backend": [{
 			"url_pattern": "/"
