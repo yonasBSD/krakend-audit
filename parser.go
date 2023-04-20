@@ -72,7 +72,8 @@ func Parse(cfg *config.ServiceConfig) Service {
 }
 
 func parseAsyncAgents(as []*config.AsyncAgent) []Agent {
-	agents := []Agent{}
+	var agents []Agent
+
 	for _, a := range as {
 		agent := Agent{
 			Details: []int{
@@ -91,7 +92,8 @@ func parseAsyncAgents(as []*config.AsyncAgent) []Agent {
 }
 
 func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
-	endpoints := []Endpoint{}
+	var endpoints []Endpoint
+
 	for _, e := range es {
 		wildcards := 0
 		if strings.HasSuffix(e.Endpoint, "*") {
@@ -146,7 +148,8 @@ func parseEncoding(enc string) int {
 }
 
 func parseBackends(bs []*config.Backend) []Backend {
-	backends := []Backend{}
+	var backends []Backend
+
 	for _, b := range bs {
 		v1 := parseEncoding(b.Encoding)
 		if len(b.AllowList) > 0 {
