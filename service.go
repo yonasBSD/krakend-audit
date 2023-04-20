@@ -17,9 +17,7 @@ func (s Service) Clone() Service {
 		Endpoints:  make([]Endpoint, len(s.Endpoints)),
 		Components: s.Components.Clone(),
 	}
-	for i, v := range s.Details {
-		res.Details[i] = v
-	}
+	copy(res.Details, s.Details)
 	for i, a := range s.Agents {
 		res.Agents[i] = a.Clone()
 	}
@@ -43,9 +41,7 @@ func (a Agent) Clone() Agent {
 		Backends:   make([]Backend, len(a.Backends)),
 		Components: a.Components.Clone(),
 	}
-	for i, v := range a.Details {
-		res.Details[i] = v
-	}
+	copy(res.Details, a.Details)
 	for i, b := range a.Backends {
 		res.Backends[i] = b.Clone()
 	}
@@ -66,9 +62,7 @@ func (e Endpoint) Clone() Endpoint {
 		Backends:   make([]Backend, len(e.Backends)),
 		Components: e.Components.Clone(),
 	}
-	for i, v := range e.Details {
-		res.Details[i] = v
-	}
+	copy(res.Details, e.Details)
 	for i, b := range e.Backends {
 		res.Backends[i] = b.Clone()
 	}
@@ -87,9 +81,7 @@ func (b Backend) Clone() Backend {
 		Details:    make([]int, len(b.Details)),
 		Components: b.Components.Clone(),
 	}
-	for i, v := range b.Details {
-		res.Details[i] = v
-	}
+	copy(res.Details, b.Details)
 	return res
 }
 
@@ -101,9 +93,7 @@ func (c Component) Clone() Component {
 	res := Component{}
 	for i, vs := range c {
 		res[i] = make([]int, len(vs))
-		for j, v := range vs {
-			res[i][j] = v
-		}
+		copy(res[i], vs)
 	}
 	return res
 }
