@@ -31,5 +31,16 @@
 		"backend": [{
 			"url_pattern": "/"
 		}]
+	},
+	{
+		"endpoint": "/wildcarded/resource/*",
+		"timeout": "10s",
+        "input_query_strings": ["*"],
+        "input_headers": ["*"],
+		"extra_config": {
+		},
+		"backend": [{
+			"url_pattern": "/"
+		}]
 	}]
 }
