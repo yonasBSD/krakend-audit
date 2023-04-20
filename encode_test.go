@@ -86,7 +86,8 @@ func generateCfg() *config.ServiceConfig {
 	}
 
 	for i := 0; i < 1000; i++ {
-		endpoints := []*config.EndpointConfig{}
+		var endpoints []*config.EndpointConfig
+
 		for k := 0; k < 1+rand.Intn(3); k++ {
 			e := &config.EndpointConfig{
 				Endpoint:       fmt.Sprintf("/foo/%3d", rand.Intn(100)),
