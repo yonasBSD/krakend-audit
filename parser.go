@@ -7,7 +7,7 @@ import (
 	bf "github.com/krakendio/bloomfilter/v2/krakend"
 	botdetector "github.com/krakendio/krakend-botdetector/v2/krakend"
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
-	juju "github.com/krakendio/krakend-ratelimit/v2/juju/router"
+	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
 	rss "github.com/krakendio/krakend-rss/v2"
 	xml "github.com/krakendio/krakend-xml/v2"
 	"github.com/luraproject/lura/v2/config"
@@ -334,7 +334,7 @@ func parseComponents(cfg config.ExtraConfig) Component {
 
 			components[c] = []int{v1}
 
-		case juju.Namespace:
+		case ratelimit.Namespace:
 			cfg, ok := v.(map[string]interface{})
 			if !ok {
 				continue

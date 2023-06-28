@@ -11,8 +11,8 @@ import (
 	logstash "github.com/krakendio/krakend-logstash/v2"
 	metrics "github.com/krakendio/krakend-metrics/v2"
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
-	ratelimitProxy "github.com/krakendio/krakend-ratelimit/v2/juju/proxy"
-	ratelimit "github.com/krakendio/krakend-ratelimit/v2/juju/router"
+	ratelimitProxy "github.com/krakendio/krakend-ratelimit/v3/proxy"
+	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
 	router "github.com/luraproject/lura/v2/router/gin"
 	server "github.com/luraproject/lura/v2/transport/http/server/plugin"
 )
