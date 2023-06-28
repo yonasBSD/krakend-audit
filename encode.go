@@ -14,8 +14,8 @@ import (
 	jose "github.com/krakendio/krakend-jose/v2"
 	logstash "github.com/krakendio/krakend-logstash/v2"
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
-	ratelimitProxy "github.com/krakendio/krakend-ratelimit/v2/juju/proxy"
-	juju "github.com/krakendio/krakend-ratelimit/v2/juju/router"
+	ratelimitProxy "github.com/krakendio/krakend-ratelimit/v3/proxy"
+	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
 	"github.com/luraproject/lura/v2/proxy"
 	"github.com/luraproject/lura/v2/proxy/plugin"
 	router "github.com/luraproject/lura/v2/router/gin"
@@ -63,7 +63,7 @@ var componentAlias = map[string]string{
 	bf.Namespace:             "f",
 	botdetector.Namespace:    "g",
 	opencensus.Namespace:     "h",
-	juju.Namespace:           "i",
+	ratelimit.Namespace:      "i",
 	ratelimitProxy.Namespace: "j",
 	"telemetry/newrelic":     "k",
 	"telemetry/ganalytics":   "l",
