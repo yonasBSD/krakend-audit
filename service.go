@@ -129,6 +129,8 @@ const (
 	BackendGroup
 	BackendTarget
 	BackendIsCollection
+	BackendHeadersToPass
+	BackendQuery
 )
 
 const (
