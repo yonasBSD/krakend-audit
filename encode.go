@@ -75,6 +75,7 @@ var componentAlias = map[string]string{
 	gologging.Namespace:      "r",
 	gelf.Namespace:           "s",
 	logstash.Namespace:       "t",
+	"backend/grpc":           "u",
 }
 
 func applyAlias(s Service) Service {

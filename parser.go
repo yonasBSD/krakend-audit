@@ -359,6 +359,8 @@ func parseComponents(cfg config.ExtraConfig) Component {
 			components[c] = []int{v1}
 		case "auth/basic":
 			components[c] = []int{1}
+		case "backend/grpc":
+			components[c] = []int{1}
 		default:
 			components[c] = []int{}
 		}
