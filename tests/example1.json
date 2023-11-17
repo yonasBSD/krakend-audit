@@ -3,6 +3,7 @@
 	"version": 3,
 	"debug_endpoint": true,
 	"echo_endpoint": true,
+    "use_h2c": true,
 	"extra_config": {
 		"github_com/devopsfaith/krakend/transport/http/server/handler": {
 			"name": ["basic-auth"]

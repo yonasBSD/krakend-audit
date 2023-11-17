@@ -73,6 +73,10 @@ func hasNoHTTPSecure(s *Service) bool {
 }
 
 func hasH2C(s *Service) bool {
+	return hasBit(s.Details[0], ServiceUseH2C)
+}
+
+func hasDeprecatedH2C(s *Service) bool {
 	v, ok := s.Components[router.Namespace]
 	if !ok || len(v) == 0 {
 		return false

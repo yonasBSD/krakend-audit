@@ -110,6 +110,7 @@ const (
 	ServiceTLSDisableSystemCaPool
 	ServiceTLSCaCerts
 	ServiceEcho
+	ServiceUseH2C
 )
 
 const (

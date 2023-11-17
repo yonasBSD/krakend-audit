@@ -726,6 +726,8 @@ github.com/luraproject/lura/v2 v2.3.1-0.20230929204025-69ca25ee70f7 h1:T80Tz/VSZ
 github.com/luraproject/lura/v2 v2.3.1-0.20230929204025-69ca25ee70f7/go.mod h1:2OTHP8168FIPt2PvyAKgoFVSKO0hokz0rO68JjInaQs=
 github.com/luraproject/lura/v2 v2.4.1 h1:nNB2oOwY3Jh6EIp0deZgmtQAZsK6rCVP6Dau201nkYU=
 github.com/luraproject/lura/v2 v2.4.1/go.mod h1:GaJ74BcWX1iqAm2+byZ2tjI710XOEjeSRGEDtvbboUw=
+github.com/luraproject/lura/v2 v2.4.2-0.20231117095058-cb05abe753a8 h1:JLT0cdEHN5LOJ+vNkoYEcPM3LuRirCYNNDdItK/Ceqo=
+github.com/luraproject/lura/v2 v2.4.2-0.20231117095058-cb05abe753a8/go.mod h1:GaJ74BcWX1iqAm2+byZ2tjI710XOEjeSRGEDtvbboUw=
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=
 github.com/mattn/go-colorable v0.1.1/go.mod h1:FuOcm+DKB9mbwrcAfNl7/TZVBZ6rcnceauSikq3lYCQ=
 github.com/mattn/go-colorable v0.1.4/go.mod h1:U0ppj6V5qS13XJ6of8GYAs25YV2eR4EVcfRqFIhoBtE=

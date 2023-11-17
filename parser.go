@@ -63,6 +63,10 @@ func Parse(cfg *config.ServiceConfig) Service {
 		v1 = addBit(v1, ServiceEcho)
 	}
 
+	if cfg.UseH2C {
+		v1 = addBit(v1, ServiceUseH2C)
+	}
+
 	return Service{
 		Details:    []int{v1},
 		Agents:     parseAsyncAgents(cfg.AsyncAgents),
