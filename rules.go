@@ -86,7 +86,16 @@ func hasDeprecatedH2C(s *Service) bool {
 
 func hasEndpointWildcard(s *Service) bool {
 	for _, e := range s.Endpoints {
-		if hasBit(e.Details[4], 0) {
+		if hasBit(e.Details[4], BitEndpointWildcard) {
+			return true
+		}
+	}
+	return false
+}
+
+func hasEndpointCatchAll(s *Service) bool {
+	for _, e := range s.Endpoints {
+		if hasBit(e.Details[4], BitEndpointCatchAll) {
 			return true
 		}
 	}

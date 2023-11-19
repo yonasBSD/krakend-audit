@@ -47,5 +47,14 @@
 		"backend": [{
 			"url_pattern": "/"
 		}]
+	},
+	{
+		"endpoint": "/__catchall",
+		"timeout": "10s",
+		"extra_config": {
+		},
+		"backend": [{
+			"url_pattern": "/"
+		}]
 	}]
 }

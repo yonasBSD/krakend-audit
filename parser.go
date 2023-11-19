@@ -95,6 +95,13 @@ func parseAsyncAgents(as []*config.AsyncAgent) []Agent {
 	return agents
 }
 
+const (
+	BitEndpointWildcard             int = 0
+	BitEndpointQueryStringWildcard      = 1
+	BitEndpointHeaderStringWildcard     = 2
+	BitEndpointCatchAll                 = 3
+)
+
 func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
 	var endpoints []Endpoint
 
@@ -103,6 +110,11 @@ func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
 		if strings.HasSuffix(e.Endpoint, "*") {
 			wildcards = 1
 		}
+
+		if e.Endpoint == "/__catchall" {
+			wildcards = wildcards | (1 << BitEndpointCatchAll)
+		}
+
 		for _, s := range e.QueryString {
 			if s == "*" {
 				wildcards = wildcards | 2
