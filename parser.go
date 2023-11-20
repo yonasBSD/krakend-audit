@@ -36,6 +36,11 @@ func Parse(cfg *config.ServiceConfig) Service {
 	}
 
 	if cfg.AllowInsecureConnections {
+		// this global config is deprecates, see below the allow insecure
+		// connections inside the client_tls config:
+		v1 = addBit(v1, ServiceAllowInsecureConnections)
+	}
+	if cfg.ClientTLS != nil && cfg.ClientTLS.AllowInsecureConnections {
 		v1 = addBit(v1, ServiceAllowInsecureConnections)
 	}
 
