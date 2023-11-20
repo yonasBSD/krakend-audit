@@ -13,6 +13,7 @@ import (
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
 	ratelimitProxy "github.com/krakendio/krakend-ratelimit/v3/proxy"
 	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
+	"github.com/luraproject/lura/v2/proxy"
 	router "github.com/luraproject/lura/v2/router/gin"
 	server "github.com/luraproject/lura/v2/transport/http/server/plugin"
 )
@@ -124,6 +125,16 @@ func hasMultipleUnsafeMethods(s *Service) bool {
 		}
 	}
 	return false
+}
+
+func hasSequentialProxy(s *Service) bool {
+	for _, e := range s.Endpoints {
+		p, ok := e.Components[proxy.Namespace]
+		if ok && len(p) > 0 && hasBit(p[0], 0) {
+			return true
+		}
+	}
+	return true
 }
 
 func hasQueryStringWildcard(s *Service) bool {

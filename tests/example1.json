@@ -59,6 +59,9 @@
 		"endpoint": "/__catchall",
 		"timeout": "10s",
 		"extra_config": {
+            "proxy": {
+                "sequential": true
+            }
 		},
 		"backend": [
             {

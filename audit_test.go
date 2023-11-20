@@ -36,6 +36,7 @@ func TestAudit_all(t *testing.T) {
 			"5.1.4",
 			"5.1.5",
 			"5.1.6",
+			"5.1.7",
 			// "5.2.2", -- we added multiple backends to the test to check for multiple unsafe methods
 		},
 		levels: []string{SeverityCritical, SeverityHigh, SeverityMedium, SeverityLow},
@@ -71,6 +72,7 @@ func TestAudit_exclude(t *testing.T) {
 			"5.1.4",
 			"5.1.5",
 			"5.1.6",
+			"5.1.7",
 			// "5.2.2", -- we added multiple backends to the test to check for multiple unsafe methods
 		},
 		exclude: []string{"1.1.1", "1.1.2"},

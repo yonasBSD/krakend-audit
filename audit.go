@@ -109,6 +109,7 @@ var ruleSet = []Rule{
 	NewRule("5.1.4", SeverityLow, "Declare explicit endpoints instead of using wildcards.", hasEndpointWildcard),
 	NewRule("5.1.5", SeverityMedium, "Declare explicit endpoints instead of using /__catchall.", hasEndpointCatchAll),
 	NewRule("5.1.6", SeverityMedium, "Avoid using multiple write methods in endpoint definitions.", hasMultipleUnsafeMethods),
+	NewRule("5.1.7", SeverityMedium, "Avoid using sequential proxy.", hasSequentialProxy),
 	NewRule("5.2.1", SeverityCritical, "Ensure all endpoints have at least one backend for proper functionality.", hasEndpointWithoutBackends),
 	NewRule("5.2.2", SeverityLow, "Benefit from the backend for frontend pattern capabilities.", hasASingleBackendPerEndpoint),
 	NewRule("5.2.3", SeverityLow, "Avoid coupling clients by overusing no-op encoding.", hasAllEndpointsAsNoop),

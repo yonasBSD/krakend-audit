@@ -46,5 +46,6 @@ func ExampleAudit() {
 	// 15: 4.3.1 MEDIUM  	Use the improved logging component for better log parsing.
 	// 16: 5.1.5 MEDIUM  	Declare explicit endpoints instead of using /__catchall.
 	// 17: 5.1.6 MEDIUM  	Avoid using multiple write methods in endpoint definitions.
+	// 18: 5.1.7 MEDIUM  	Avoid using sequential proxy.
 
 }
