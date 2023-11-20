@@ -377,6 +377,8 @@ func parseComponents(cfg config.ExtraConfig) Component {
 			components[c] = []int{1}
 		case "backend/grpc":
 			components[c] = []int{1}
+		case "server/virtualhost":
+			components[c] = []int{1}
 		default:
 			components[c] = []int{}
 		}
