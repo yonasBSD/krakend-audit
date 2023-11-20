@@ -401,6 +401,10 @@ func parseComponents(cfg config.ExtraConfig) Component {
 			components[c] = []int{1}
 		case "server/virtualhost":
 			components[c] = []int{1}
+		case "server/static-filesystem":
+			components[c] = []int{1}
+		case "backend/static-filesystem":
+			components[c] = []int{1}
 		case "backend/http/client":
 			cfg, ok := v.(map[string]interface{})
 			if !ok {
