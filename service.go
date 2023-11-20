@@ -155,3 +155,9 @@ const (
 	RouterHideVersionHeader
 	RouterUseH2C
 )
+
+const (
+	BackendComponentHTTPClient = iota
+	BackendComponentHTTPClientAllowInsecureConnections
+	BackendComponentHTTPClientCerts
+)

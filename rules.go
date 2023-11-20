@@ -84,6 +84,21 @@ func hasDeprecatedH2C(s *Service) bool {
 	return hasBit(v[0], RouterUseH2C)
 }
 
+func hasBackendInsecureConnections(s *Service) bool {
+	for _, e := range s.Endpoints {
+		for _, b := range e.Backends {
+			v, ok := b.Components["backend/http/client"]
+			if !ok || len(v) == 0 {
+				continue
+			}
+			if hasBit(v[0], BackendComponentHTTPClientAllowInsecureConnections) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func hasEndpointWildcard(s *Service) bool {
 	for _, e := range s.Endpoints {
 		if hasBit(e.Details[4], BitEndpointWildcard) {

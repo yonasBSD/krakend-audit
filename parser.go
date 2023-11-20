@@ -4,6 +4,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mitchellh/mapstructure"
+
 	bf "github.com/krakendio/bloomfilter/v2/krakend"
 	botdetector "github.com/krakendio/krakend-botdetector/v2/krakend"
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
@@ -384,6 +386,28 @@ func parseComponents(cfg config.ExtraConfig) Component {
 			components[c] = []int{1}
 		case "server/virtualhost":
 			components[c] = []int{1}
+		case "backend/http/client":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			v1 := 1
+			if clientTLS, ok := cfg["client_tls"].(map[string]interface{}); ok {
+				var cTLS config.ClientTLS
+				err := mapstructure.Decode(clientTLS, &cTLS)
+				if err == nil {
+					if cTLS.AllowInsecureConnections {
+						v1 = addBit(v1, BackendComponentHTTPClientAllowInsecureConnections)
+					}
+					if len(cTLS.ClientCerts) > 0 {
+						// check if we are using client certificates for mTLS against other
+						// services
+						v1 = addBit(v1, BackendComponentHTTPClientCerts)
+					}
+				}
+			}
+			components[c] = []int{v1}
 		default:
 			components[c] = []int{}
 		}

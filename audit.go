@@ -87,6 +87,7 @@ var ruleSet = []Rule{
 	NewRule("2.1.7", SeverityHigh, "Enable HTTP security header checks (security/http).", hasNoHTTPSecure),
 	NewRule("2.1.8", SeverityHigh, "Avoid clear text communication (h2c).", hasH2C),
 	NewRule("2.1.9", SeverityHigh, "Avoid clear text communication (h2c) and use of deprecated option (prefer service level UseH2C)", hasDeprecatedH2C),
+	NewRule("2.1.10", SeverityLow, "Avoid insecure connections", hasBackendInsecureConnections),
 	NewRule("2.2.1", SeverityMedium, "Hide the version banner in runtime.", hasNoObfuscatedVersionHeader),
 	NewRule("2.2.2", SeverityHigh, "Enable CORS.", hasNoCORS),
 	NewRule("2.2.3", SeverityHigh, "Avoid passing all input headers to the backend.", hasHeadersWildcard),

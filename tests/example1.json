@@ -45,7 +45,14 @@
 		"extra_config": {
 		},
 		"backend": [{
-			"url_pattern": "/"
+			"url_pattern": "/",
+            "extra_config": {
+                "backend/http/client": {
+                    "client_tls": {
+                        "allow_insecure_connections": true
+                    }
+                }
+            }
 		}]
 	},
 	{
