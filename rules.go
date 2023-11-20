@@ -117,6 +117,15 @@ func hasEndpointCatchAll(s *Service) bool {
 	return false
 }
 
+func hasMultipleUnsafeMethods(s *Service) bool {
+	for _, e := range s.Endpoints {
+		if e.Details[5] > 1 {
+			return true
+		}
+	}
+	return false
+}
+
 func hasQueryStringWildcard(s *Service) bool {
 	for _, e := range s.Endpoints {
 		if hasBit(e.Details[4], 1) {

@@ -60,8 +60,18 @@
 		"timeout": "10s",
 		"extra_config": {
 		},
-		"backend": [{
-			"url_pattern": "/"
-		}]
+		"backend": [
+            {
+                "url_pattern": "/"
+            },
+            {
+                "method": "POST",
+                "url_pattern": "example.com/foo"
+            },
+            {
+                "method": "POST",
+                "url_pattern": "example.com/bar"
+            }
+        ]
 	}]
 }

@@ -134,6 +134,20 @@ func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
 				break
 			}
 		}
+
+		numUnsafeMethods := 0
+		for _, b := range e.Backend {
+			if b.Method != "HEAD" && b.Method != "GET" {
+				numUnsafeMethods++
+			} else {
+				// TODO: check if this is correct:
+				// we consider a gRPC call an unsafe method
+				if _, ok := b.ExtraConfig["backend/grpc"]; ok {
+					numUnsafeMethods++
+				}
+			}
+		}
+
 		endpoint := Endpoint{
 			Details: []int{
 				parseEncoding(e.OutputEncoding),
@@ -141,6 +155,7 @@ func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
 				len(e.HeadersToPass),
 				int(e.Timeout / time.Millisecond),
 				wildcards,
+				numUnsafeMethods,
 			},
 			Backends:   parseBackends(e.Backend),
 			Components: parseComponents(e.ExtraConfig),
