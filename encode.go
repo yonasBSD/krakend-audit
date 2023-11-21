@@ -81,6 +81,7 @@ var componentAlias = map[string]string{
 	"server/static-filesystem":  "x",
 	"backend/static-filesystem": "y",
 	"backend/http/client":       "z",
+	"telemetry/moesif":          "0",
 }
 
 func applyAlias(s Service) Service {
