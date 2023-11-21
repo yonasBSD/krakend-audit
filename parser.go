@@ -395,16 +395,6 @@ func parseComponents(cfg config.ExtraConfig) Component {
 			}
 
 			components[c] = []int{v1}
-		case "auth/basic":
-			components[c] = []int{1}
-		case "backend/grpc":
-			components[c] = []int{1}
-		case "server/virtualhost":
-			components[c] = []int{1}
-		case "server/static-filesystem":
-			components[c] = []int{1}
-		case "backend/static-filesystem":
-			components[c] = []int{1}
 		case "backend/http/client":
 			cfg, ok := v.(map[string]interface{})
 			if !ok {
