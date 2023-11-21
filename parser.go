@@ -417,6 +417,16 @@ func parseComponents(cfg config.ExtraConfig) Component {
 				}
 			}
 			components[c] = []int{v1}
+		case "telemetry/moesif":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			eventQueueSize := cfg["event_queue_size"].(int)
+			batchSize := cfg["batch_size"].(int)
+			timerWakeupSecs := cfg["timer_wake_up_seconds"].(int)
+			components[c] = []int{eventQueueSize, batchSize, timerWakeupSecs}
 		default:
 			components[c] = []int{}
 		}
