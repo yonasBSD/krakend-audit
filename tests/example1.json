@@ -3,6 +3,7 @@
 	"version": 3,
 	"debug_endpoint": true,
 	"echo_endpoint": true,
+    "use_h2c": true,
 	"extra_config": {
 		"github_com/devopsfaith/krakend/transport/http/server/handler": {
 			"name": ["basic-auth"]
@@ -44,7 +45,36 @@
 		"extra_config": {
 		},
 		"backend": [{
-			"url_pattern": "/"
+			"url_pattern": "/",
+            "extra_config": {
+                "backend/http/client": {
+                    "client_tls": {
+                        "allow_insecure_connections": true
+                    }
+                }
+            }
 		}]
+	},
+	{
+		"endpoint": "/__catchall",
+		"timeout": "10s",
+		"extra_config": {
+            "proxy": {
+                "sequential": true
+            }
+		},
+		"backend": [
+            {
+                "url_pattern": "/"
+            },
+            {
+                "method": "POST",
+                "url_pattern": "example.com/foo"
+            },
+            {
+                "method": "POST",
+                "url_pattern": "example.com/bar"
+            }
+        ]
 	}]
 }

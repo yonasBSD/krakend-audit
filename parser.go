@@ -4,6 +4,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mitchellh/mapstructure"
+
 	bf "github.com/krakendio/bloomfilter/v2/krakend"
 	botdetector "github.com/krakendio/krakend-botdetector/v2/krakend"
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
@@ -35,7 +37,9 @@ func Parse(cfg *config.ServiceConfig) Service {
 		v1 = addBit(v1, ServiceDebug)
 	}
 
-	if cfg.AllowInsecureConnections {
+	if cfg.AllowInsecureConnections || (cfg.ClientTLS != nil && cfg.ClientTLS.AllowInsecureConnections) {
+		// this global config is deprecates, see below the allow insecure
+		// connections inside the client_tls config:
 		v1 = addBit(v1, ServiceAllowInsecureConnections)
 	}
 
@@ -61,6 +65,10 @@ func Parse(cfg *config.ServiceConfig) Service {
 
 	if cfg.Echo {
 		v1 = addBit(v1, ServiceEcho)
+	}
+
+	if cfg.UseH2C {
+		v1 = addBit(v1, ServiceUseH2C)
 	}
 
 	return Service{
@@ -91,6 +99,13 @@ func parseAsyncAgents(as []*config.AsyncAgent) []Agent {
 	return agents
 }
 
+const (
+	BitEndpointWildcard             int = 0
+	BitEndpointQueryStringWildcard      = 1
+	BitEndpointHeaderStringWildcard     = 2
+	BitEndpointCatchAll                 = 3
+)
+
 func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
 	var endpoints []Endpoint
 
@@ -99,6 +114,11 @@ func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
 		if strings.HasSuffix(e.Endpoint, "*") {
 			wildcards = 1
 		}
+
+		if e.Endpoint == "/__catchall" {
+			wildcards = wildcards | (1 << BitEndpointCatchAll)
+		}
+
 		for _, s := range e.QueryString {
 			if s == "*" {
 				wildcards = wildcards | 2
@@ -111,6 +131,20 @@ func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
 				break
 			}
 		}
+
+		numUnsafeMethods := 0
+		for _, b := range e.Backend {
+			if b.Method != "HEAD" && b.Method != "GET" {
+				numUnsafeMethods++
+			} else {
+				// TODO: check if this is correct:
+				// we consider a gRPC call an unsafe method
+				if _, ok := b.ExtraConfig["backend/grpc"]; ok {
+					numUnsafeMethods++
+				}
+			}
+		}
+
 		endpoint := Endpoint{
 			Details: []int{
 				parseEncoding(e.OutputEncoding),
@@ -118,6 +152,7 @@ func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
 				len(e.HeadersToPass),
 				int(e.Timeout / time.Millisecond),
 				wildcards,
+				numUnsafeMethods,
 			},
 			Backends:   parseBackends(e.Backend),
 			Components: parseComponents(e.ExtraConfig),
@@ -357,10 +392,38 @@ func parseComponents(cfg config.ExtraConfig) Component {
 			}
 
 			components[c] = []int{v1}
-		case "auth/basic":
-			components[c] = []int{1}
-		case "backend/grpc":
-			components[c] = []int{1}
+		case "backend/http/client":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			v1 := 1
+			if clientTLS, ok := cfg["client_tls"].(map[string]interface{}); ok {
+				var cTLS config.ClientTLS
+				err := mapstructure.Decode(clientTLS, &cTLS)
+				if err == nil {
+					if cTLS.AllowInsecureConnections {
+						v1 = addBit(v1, BackendComponentHTTPClientAllowInsecureConnections)
+					}
+					if len(cTLS.ClientCerts) > 0 {
+						// check if we are using client certificates for mTLS against other
+						// services
+						v1 = addBit(v1, BackendComponentHTTPClientCerts)
+					}
+				}
+			}
+			components[c] = []int{v1}
+		case "telemetry/moesif":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			eventQueueSize, _ := cfg["event_queue_size"].(int)
+			batchSize, _ := cfg["batch_size"].(int)
+			timerWakeupSecs, _ := cfg["timer_wake_up_seconds"].(int)
+			components[c] = []int{eventQueueSize, batchSize, timerWakeupSecs}
 		default:
 			components[c] = []int{}
 		}

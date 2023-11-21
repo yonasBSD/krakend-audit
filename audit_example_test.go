@@ -43,5 +43,8 @@ func ExampleAudit() {
 	// 12: 4.1.1 MEDIUM  	Implement a telemetry system for collecting metrics for monitoring and troubleshooting.
 	// 13: 4.2.1 MEDIUM  	Implement a telemetry system for tracing for monitoring and troubleshooting.
 	// 14: 4.3.1 MEDIUM  	Use the improved logging component for better log parsing.
+	// 15: 5.1.5 MEDIUM  	Declare explicit endpoints instead of using /__catchall.
+	// 16: 5.1.6 MEDIUM  	Avoid using multiple write methods in endpoint definitions.
+	// 17: 5.1.7 MEDIUM  	Avoid using sequential proxy.
 
 }

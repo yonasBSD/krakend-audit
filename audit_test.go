@@ -14,6 +14,7 @@ func TestAudit_all(t *testing.T) {
 			"2.1.3",
 			"2.1.7",
 			"2.1.8",
+			"2.1.9",
 			"2.2.1",
 			"2.2.2",
 			"2.2.3",
@@ -32,7 +33,10 @@ func TestAudit_all(t *testing.T) {
 			"5.1.2",
 			"5.1.3",
 			"5.1.4",
-			"5.2.2",
+			"5.1.5",
+			"5.1.6",
+			"5.1.7",
+			// "5.2.2", -- we added multiple backends to the test to check for multiple unsafe methods
 		},
 		levels: []string{SeverityCritical, SeverityHigh, SeverityMedium, SeverityLow},
 	}
@@ -45,6 +49,7 @@ func TestAudit_exclude(t *testing.T) {
 			"2.1.3",
 			"2.1.7",
 			"2.1.8",
+			"2.1.9",
 			"2.2.1",
 			"2.2.2",
 			"2.2.3",
@@ -63,7 +68,10 @@ func TestAudit_exclude(t *testing.T) {
 			"5.1.2",
 			"5.1.3",
 			"5.1.4",
-			"5.2.2",
+			"5.1.5",
+			"5.1.6",
+			"5.1.7",
+			// "5.2.2", -- we added multiple backends to the test to check for multiple unsafe methods
 		},
 		exclude: []string{"1.1.1", "1.1.2"},
 		levels:  []string{SeverityCritical, SeverityHigh, SeverityMedium, SeverityLow},
@@ -106,6 +114,9 @@ func testAudit(t *testing.T, tc testCase) {
 	}
 	for i, id := range tc.expectedRecommendations {
 		if i >= len(result.Recommendations) {
+			for j := i; j < len(tc.expectedRecommendations); j++ {
+				t.Errorf("missing recomendation: %s", tc.expectedRecommendations[j])
+			}
 			break
 		}
 		if result.Recommendations[i].Rule != id {

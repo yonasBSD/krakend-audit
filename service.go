@@ -110,6 +110,7 @@ const (
 	ServiceTLSDisableSystemCaPool
 	ServiceTLSCaCerts
 	ServiceEcho
+	ServiceUseH2C
 )
 
 const (
@@ -153,4 +154,10 @@ const (
 	RouterLoggerSkipPaths
 	RouterHideVersionHeader
 	RouterUseH2C
+)
+
+const (
+	BackendComponentHTTPClient = iota
+	BackendComponentHTTPClientAllowInsecureConnections
+	BackendComponentHTTPClientCerts
 )

@@ -13,6 +13,7 @@ import (
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
 	ratelimitProxy "github.com/krakendio/krakend-ratelimit/v3/proxy"
 	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
+	"github.com/luraproject/lura/v2/proxy"
 	router "github.com/luraproject/lura/v2/router/gin"
 	server "github.com/luraproject/lura/v2/transport/http/server/plugin"
 )
@@ -73,6 +74,10 @@ func hasNoHTTPSecure(s *Service) bool {
 }
 
 func hasH2C(s *Service) bool {
+	if hasBit(s.Details[0], ServiceUseH2C) {
+		return true
+	}
+	// this is the deprecated way of assing h2c
 	v, ok := s.Components[router.Namespace]
 	if !ok || len(v) == 0 {
 		return false
@@ -80,13 +85,56 @@ func hasH2C(s *Service) bool {
 	return hasBit(v[0], RouterUseH2C)
 }
 
+func hasBackendInsecureConnections(s *Service) bool {
+	for _, e := range s.Endpoints {
+		for _, b := range e.Backends {
+			v, ok := b.Components["backend/http/client"]
+			if !ok || len(v) == 0 {
+				continue
+			}
+			if hasBit(v[0], BackendComponentHTTPClientAllowInsecureConnections) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func hasEndpointWildcard(s *Service) bool {
 	for _, e := range s.Endpoints {
-		if hasBit(e.Details[4], 0) {
+		if hasBit(e.Details[4], BitEndpointWildcard) {
 			return true
 		}
 	}
 	return false
+}
+
+func hasEndpointCatchAll(s *Service) bool {
+	for _, e := range s.Endpoints {
+		if hasBit(e.Details[4], BitEndpointCatchAll) {
+			return true
+		}
+	}
+	return false
+}
+
+func hasMultipleUnsafeMethods(s *Service) bool {
+	for _, e := range s.Endpoints {
+		if e.Details[5] > 1 {
+			return true
+		}
+	}
+	return false
+}
+
+func hasSequentialProxy(s *Service) bool {
+	for _, e := range s.Endpoints {
+		p, ok := e.Components[proxy.Namespace]
+		if ok && len(p) > 0 && hasBit(p[0], 0) {
+			return true
+		}
+	}
+	return true
 }
 
 func hasQueryStringWildcard(s *Service) bool {
