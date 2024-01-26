@@ -134,7 +134,7 @@ func hasSequentialProxy(s *Service) bool {
 			return true
 		}
 	}
-	return true
+	return false
 }
 
 func hasQueryStringWildcard(s *Service) bool {
