@@ -59,7 +59,7 @@
 		"endpoint": "/__catchall",
 		"timeout": "10s",
 		"extra_config": {
-            "proxy": {
+            "github.com/devopsfaith/krakend/proxy": {
                 "sequential": true
             }
 		},
