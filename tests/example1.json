@@ -11,6 +11,28 @@
         "github_com/luraproject/lura/router/gin": {
             "use_h2c": true
         },
+        "telemetry/opentelemetry": {
+            "exporters": {
+                "otlp": [
+                    {
+                        "name": "newrelic",
+                        "host": "example.com",
+                        "disable_metrics": true
+                    },
+                    {
+                        "name": "datadog",
+                        "host": "example.com"
+                    }
+                ],
+                "prometheus": [
+                    {
+                        "name": "default_prom"
+                    }
+                ]
+            },
+            "metric_reporting_period": 50,
+            "trace_sample_rate": 1
+        },
 		"auth/api-keys": {}
 	},
 	"tls":{
