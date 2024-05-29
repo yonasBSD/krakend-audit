@@ -194,6 +194,21 @@ func hasNoRatelimit(s *Service) bool {
 			}
 		}
 	}
+
+	_, ok = s.Components["qos/ratelimit/service"]
+	if ok {
+		return false
+	}
+
+	serverPlugins, ok := s.Components[server.Namespace]
+	if ok && len(serverPlugins) > 0 {
+		pluginsBitset := serverPlugins[0]
+		redisRateLimitBit := parseServerPlugin("redis-ratelimit")
+		if hasBit(pluginsBitset, redisRateLimitBit) {
+			return false
+		}
+	}
+
 	return true
 }
 

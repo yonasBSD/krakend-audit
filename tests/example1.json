@@ -5,6 +5,11 @@
 	"echo_endpoint": true,
     "use_h2c": true,
 	"extra_config": {
+        "qos/ratelimit/service": {
+            "max_rate": 50,
+            "client_mac_rate": 5,
+            "startegy": "ip"
+        },
 		"github_com/devopsfaith/krakend/transport/http/server/handler": {
 			"name": ["basic-auth"]
 		},
