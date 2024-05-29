@@ -473,6 +473,25 @@ func parseComponents(cfg config.ExtraConfig) Component {
 				numOTLPTraces,          // to check if we do not have traces
 				numPrometheus,          // to check if we do not have metrics
 			}
+		case "grpc":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			// we need to know if we are using a server and check if we
+			// are also using h2c
+			server, serverOk := cfg["server"].(map[string]interface{})
+			if serverOk {
+				numServices := 0
+				svcs, ok := server["services"].([]interface{})
+				if ok {
+					numServices = len(svcs)
+				}
+				components[c] = []int{
+					numServices, // warn about empty lists of services
+				}
+			}
 
 		default:
 			components[c] = []int{}
