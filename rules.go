@@ -42,7 +42,12 @@ func hasBasicAuth(s *Service) bool {
 	return false
 }
 
-func hasDeprecatedPlugins(s *Service) bool {
+func hasTelemetryMissingName(s *Service) bool {
+	// TODO: implement this check
+	return false
+}
+
+func hasDeprecatedPluginVirtualHost(s *Service) bool {
 	serverPlugins, ok := s.Components[server.Namespace]
 	if !ok {
 		return false
@@ -50,12 +55,21 @@ func hasDeprecatedPlugins(s *Service) bool {
 	if len(serverPlugins) < 1 {
 		return false
 	}
-
-	bitset := serverPlugins[0]
-	if hasBit(bitset, parseServerPlugin("virtualhost")) {
+	if hasBit(serverPlugins[0], parseServerPlugin("virtualhost")) {
 		return true
 	}
-	if hasBit(bitset, parseServerPlugin("static-filesystem")) {
+	return false
+}
+
+func hasDeprecatedPluginStaticFileSystem(s *Service) bool {
+	serverPlugins, ok := s.Components[server.Namespace]
+	if !ok {
+		return false
+	}
+	if len(serverPlugins) < 1 {
+		return false
+	}
+	if hasBit(serverPlugins[0], parseServerPlugin("static-filesystem")) {
 		return true
 	}
 	return false
@@ -310,19 +324,19 @@ func hasNoTracing(s *Service) bool {
 	return !ok1 && !ok2 && !ok3 && !okOTEL
 }
 
-func hasDeprecatedTelemetry(s *Service) bool {
-	for _, k := range []string{
-		opencensus.Namespace,
-		// metrics.Namespace,  // TODO: should we tag this as deprecated ?
-		"telemetry/newrelic",
-		"telemetry/ganalytics",
-		"telemetry/instana",
-	} {
-		if _, ok := s.Components[k]; ok {
-			return true
-		}
-	}
-	return false
+func hasDeprecatedInstana(s *Service) bool {
+	_, ok := s.Components["telemetry/instana"]
+	return ok
+}
+
+func hasDeprecatedGanalytics(s *Service) bool {
+	_, ok := s.Components["telemetry/ganalytics"]
+	return ok
+}
+
+func hasDeprecatedOpenCensus(s *Service) bool {
+	_, ok := s.Components[opencensus.Namespace]
+	return ok
 }
 
 func hasNoLogging(s *Service) bool {

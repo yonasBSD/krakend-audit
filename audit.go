@@ -98,7 +98,7 @@ var ruleSet = []Rule{
 	NewRule("2.2.2", SeverityHigh, "Enable CORS.", hasNoCORS),
 	NewRule("2.2.3", SeverityHigh, "Avoid passing all input headers to the backend.", hasHeadersWildcard),
 	NewRule("2.2.4", SeverityHigh, "Avoid passing all input query strings to the backend.", hasQueryStringWildcard),
-	NewRule("2.2.5", SeverityMedium, "Avoid exposing gRPC server without services declared.", hasEmptyGRPCServer),
+	NewRule("2.2.5", SeverityLow, "Avoid exposing gRPC server without services declared.", hasEmptyGRPCServer),
 
 	/*
 	   Section 3: Traffic management / rate limits
@@ -115,12 +115,10 @@ var ruleSet = []Rule{
 	   Section 4 : Telemetry
 	*/
 	NewRule("4.1.1", SeverityMedium, "Implement a telemetry system for collecting metrics for monitoring and troubleshooting.", hasNoMetrics),
-	// why is there a 4.1.2 missing ?
+	NewRule("4.1.2", SeverityMedium, "Give your configuration a name for easy identification in metric tracking.", hasTelemetryMissingName),
 	NewRule("4.1.3", SeverityHigh, "Avoid duplicating telemetry options to prevent system overload.", hasSeveralTelemetryComponents),
-	NewRule("4.1.4", SeverityMedium, "Use OpenTelemetry instead of deprecated telemetry options (instana, ganalytics, newrelic, opencensus).", hasDeprecatedTelemetry),
 	NewRule("4.2.1", SeverityMedium, "Implement a telemetry system for tracing for monitoring and troubleshooting.", hasNoTracing),
 	NewRule("4.3.1", SeverityMedium, "Use the improved logging component for better log parsing.", hasNoLogging),
-
 	/*
 	   Section 5: Endpoint level audit
 	*/
@@ -141,7 +139,13 @@ var ruleSet = []Rule{
 	NewRule("6.1.1", SeverityLow, "Ensure Async Agents do not start sequentially to avoid overloading the system (+10 agents).", hasSequentialStart),
 
 	/*
-	   Section 7: Plugin recommendations
+	   Section 7: Deprecations
 	*/
-	NewRule("7.1.1", SeverityMedium, "Do not use deprecated plugins (virtualhost, static-filesystem).", hasDeprecatedPlugins),
+	// 7.1 Plugin Deprecations:
+	NewRule("7.1.1", SeverityHigh, "Do not use deprecated plugin virtualhost.", hasDeprecatedPluginVirtualHost),
+	NewRule("7.1.2", SeverityHigh, "Do not use deprecated plugin static-filesystem.", hasDeprecatedPluginStaticFileSystem),
+	// 7.2 Component Deprecations
+	NewRule("7.2.1", SeverityHigh, "Do not use deprecated component telemetry/ganalytics.", hasDeprecatedGanalytics),
+	NewRule("7.2.2", SeverityHigh, "Do not use deprecated component telemetry/instana.", hasDeprecatedInstana),
+	NewRule("7.2.3", SeverityHigh, "Do not use deprecated component telemetry/instana.", hasDeprecatedOpenCensus),
 }
