@@ -91,6 +91,10 @@ var ruleSet = []Rule{
 	NewRule("2.2.2", SeverityHigh, "Enable CORS.", hasNoCORS),
 	NewRule("2.2.3", SeverityHigh, "Avoid passing all input headers to the backend.", hasHeadersWildcard),
 	NewRule("2.2.4", SeverityHigh, "Avoid passing all input query strings to the backend.", hasQueryStringWildcard),
+
+	/*
+	   Section 3: Traffic management / rate limits
+	*/
 	NewRule("3.1.1", SeverityLow, "Enable a bot detector.", hasBotdetectorDisabled),
 	NewRule("3.1.2", SeverityHigh, "Implement a rate-limiting strategy and avoid having an All-You-Can-Eat API.", hasNoRatelimit),
 	NewRule("3.1.3", SeverityHigh, "Protect your backends with a circuit breaker.", hasNoCB),
@@ -98,10 +102,20 @@ var ruleSet = []Rule{
 	NewRule("3.3.2", SeverityMedium, "Set timeouts to below 5 seconds for improved performance.", hasTimeoutBiggerThan(5000)),
 	NewRule("3.3.3", SeverityHigh, "Set timeouts to below 30 seconds for improved performance.", hasTimeoutBiggerThan(30000)),
 	NewRule("3.3.4", SeverityCritical, "Set timeouts to below 1 minute for improved performance.", hasTimeoutBiggerThan(60000)),
+
+	/*
+	   Section 4 : Telemetry
+	*/
 	NewRule("4.1.1", SeverityMedium, "Implement a telemetry system for collecting metrics for monitoring and troubleshooting.", hasNoMetrics),
+	// why is there a 4.1.2 missing ?
 	NewRule("4.1.3", SeverityHigh, "Avoid duplicating telemetry options to prevent system overload.", hasSeveralTelemetryComponents),
+	NewRule("4.1.4", SeverityMedium, "Use OpenTelemetry instead of deprecated telemetry options (instana, ganalytics, newrelic, opencensus).", hasDeprecatedTelemetry),
 	NewRule("4.2.1", SeverityMedium, "Implement a telemetry system for tracing for monitoring and troubleshooting.", hasNoTracing),
 	NewRule("4.3.1", SeverityMedium, "Use the improved logging component for better log parsing.", hasNoLogging),
+
+	/*
+	   Section 5: Endpoint level audit
+	*/
 	NewRule("5.1.1", SeverityLow, "Follow a RESTful endpoint structure for improved readability and maintainability.", hasRestfulDisabled),
 	NewRule("5.1.2", SeverityLow, "Disable the /__debug/ endpoint for added security.", hasDebugEnabled),
 	NewRule("5.1.3", SeverityLow, "Disable the /__echo/ endpoint for added security.", hasEchoEnabled),
@@ -112,5 +126,14 @@ var ruleSet = []Rule{
 	NewRule("5.2.1", SeverityCritical, "Ensure all endpoints have at least one backend for proper functionality.", hasEndpointWithoutBackends),
 	NewRule("5.2.2", SeverityLow, "Benefit from the backend for frontend pattern capabilities.", hasASingleBackendPerEndpoint),
 	NewRule("5.2.3", SeverityLow, "Avoid coupling clients by overusing no-op encoding.", hasAllEndpointsAsNoop),
+
+	/*
+	   Section 6: Async agents.
+	*/
 	NewRule("6.1.1", SeverityLow, "Ensure Async Agents do not start sequentially to avoid overloading the system (+10 agents).", hasSequentialStart),
+
+	/*
+	   Section 7: Plugin recommendations
+	*/
+	NewRule("7.1.1", SeverityMedium, "Do not use deprecated plugins (virtualhost, static-filesystem).", hasDeprecatedPlugins),
 }

@@ -42,6 +42,25 @@ func hasBasicAuth(s *Service) bool {
 	return false
 }
 
+func hasDeprecatedPlugins(s *Service) bool {
+	serverPlugins, ok := s.Components[server.Namespace]
+	if !ok {
+		return false
+	}
+	if len(serverPlugins) < 1 {
+		return false
+	}
+
+	bitset := serverPlugins[0]
+	if hasBit(bitset, parseServerPlugin("virtualhost")) {
+		return true
+	}
+	if hasBit(bitset, parseServerPlugin("static-filesystem")) {
+		return true
+	}
+	return false
+}
+
 func hasApiKeys(s *Service) bool {
 	_, ok := s.Components["auth/api-keys"]
 	return ok
@@ -289,6 +308,21 @@ func hasNoTracing(s *Service) bool {
 		}
 	}
 	return !ok1 && !ok2 && !ok3 && !okOTEL
+}
+
+func hasDeprecatedTelemetry(s *Service) bool {
+	for _, k := range []string{
+		opencensus.Namespace,
+		// metrics.Namespace,  // TODO: should we tag this as deprecated ?
+		"telemetry/newrelic",
+		"telemetry/ganalytics",
+		"telemetry/instana",
+	} {
+		if _, ok := s.Components[k]; ok {
+			return true
+		}
+	}
+	return false
 }
 
 func hasNoLogging(s *Service) bool {
