@@ -98,7 +98,7 @@ var ruleSet = []Rule{
 	NewRule("2.2.2", SeverityHigh, "Enable CORS.", hasNoCORS),
 	NewRule("2.2.3", SeverityHigh, "Avoid passing all input headers to the backend.", hasHeadersWildcard),
 	NewRule("2.2.4", SeverityHigh, "Avoid passing all input query strings to the backend.", hasQueryStringWildcard),
-	NewRule("2.2.5", SeverityHigh, "Avoid exposing gRPC server without services declared.", hasEmptyGRPCServer),
+	NewRule("2.2.5", SeverityMedium, "Avoid exposing gRPC server without services declared.", hasEmptyGRPCServer),
 
 	/*
 	   Section 3: Traffic management / rate limits
