@@ -267,6 +267,12 @@ func hasSeveralTelemetryComponents(s *Service) bool {
 			tot++
 		}
 	}
+
+	otel, okOTEL := s.Components["telemetry/opentelemetry"]
+	if okOTEL && len(otel) >= 5 {
+		// OTL enabled metrics + prometheus
+		tot += otel[2] + otel[4]
+	}
 	return tot > 1
 }
 
@@ -274,7 +280,15 @@ func hasNoTracing(s *Service) bool {
 	_, ok1 := s.Components[opencensus.Namespace]
 	_, ok2 := s.Components["telemetry/newrelic"]
 	_, ok3 := s.Components["telemetry/instana"]
-	return !ok1 && !ok2 && !ok3
+
+	otel, okOTEL := s.Components["telemetry/opentelemetry"]
+	if okOTEL {
+		// in position 3 we have number of enabled OTEL exporters for traces:
+		if len(otel) < 4 || otel[3] < 1 {
+			okOTEL = false
+		}
+	}
+	return !ok1 && !ok2 && !ok3 && !okOTEL
 }
 
 func hasNoLogging(s *Service) bool {

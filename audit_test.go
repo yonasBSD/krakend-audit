@@ -27,7 +27,8 @@ func TestAudit_all(t *testing.T) {
 			"3.3.3",
 			"3.3.4",
 			"4.1.1",
-			"4.2.1",
+			"4.1.3", // -- we have prometheus and otel metrics
+			// "4.2.1", -- opentelemetryis enabled for tracing
 			"4.3.1",
 			"5.1.1",
 			"5.1.2",
@@ -62,7 +63,8 @@ func TestAudit_exclude(t *testing.T) {
 			"3.3.3",
 			"3.3.4",
 			"4.1.1",
-			"4.2.1",
+			"4.1.3", // -- we have prometheus and otel metrics
+			// "4.2.1", -- opentelemetry is enabled for tracing
 			"4.3.1",
 			"5.1.1",
 			"5.1.2",

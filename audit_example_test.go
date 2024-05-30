@@ -40,6 +40,8 @@ func ExampleAudit() {
 	// 09: 3.3.3 HIGH  	Set timeouts to below 30 seconds for improved performance.
 	// 10: 3.3.4 CRITICAL  	Set timeouts to below 1 minute for improved performance.
 	// 11: 4.1.1 MEDIUM  	Implement a telemetry system for collecting metrics for monitoring and troubleshooting.
+
+	// 12: 4.1.3 HIGH  	Avoid duplicating telemetry options to prevent system overload.", hasSeveralTelemetryComponents),
 	// 12: 4.2.1 MEDIUM  	Implement a telemetry system for tracing for monitoring and troubleshooting.
 	// 13: 4.3.1 MEDIUM  	Use the improved logging component for better log parsing.
 	// 14: 5.1.5 MEDIUM  	Declare explicit endpoints instead of using /__catchall.
