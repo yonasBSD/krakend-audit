@@ -78,9 +78,16 @@ type Recommendation struct {
 type Stats struct{}
 
 var ruleSet = []Rule{
+	/*
+	   Section 1: Security
+	*/
 	NewRule("1.1.1", SeverityHigh, "Implement more secure alternatives than Basic Auth to protect your data.", hasBasicAuth),
 	NewRule("1.1.2", SeverityMedium, "Implement stateless authorization methods such as JWT to secure your endpoints as opposed to using API keys.", hasApiKeys),
 	NewRule("1.2.1", SeverityHigh, "Prioritize using JWT for endpoint authorization to ensure security.", hasNoJWT),
+
+	/*
+	   Section 2: Service level recommendations
+	*/
 	NewRule("2.1.1", SeverityHigh, "Only allow secure connections (avoid insecure_connections).", hasInsecureConnections),
 	NewRule("2.1.2", SeverityHigh, "Enable TLS or use a terminator in front of KrakenD.", hasNoTLS),
 	NewRule("2.1.3", SeverityCritical, "TLS is configured but its disable flag prevents from using it.", hasTLSDisabled),
@@ -91,6 +98,7 @@ var ruleSet = []Rule{
 	NewRule("2.2.2", SeverityHigh, "Enable CORS.", hasNoCORS),
 	NewRule("2.2.3", SeverityHigh, "Avoid passing all input headers to the backend.", hasHeadersWildcard),
 	NewRule("2.2.4", SeverityHigh, "Avoid passing all input query strings to the backend.", hasQueryStringWildcard),
+	NewRule("2.2.5", SeverityHigh, "Avoid exposing gRPC server without services declared.", hasEmptyGRPCServer),
 
 	/*
 	   Section 3: Traffic management / rate limits

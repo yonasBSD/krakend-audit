@@ -374,3 +374,7 @@ func hasAllEndpointsAsNoop(s *Service) bool {
 func hasSequentialStart(s *Service) bool {
 	return hasBit(s.Details[0], ServiceSequentialStart) && len(s.Agents) >= 10
 }
+
+func hasEmptyGRPCServer(s *Service) bool {
+	return len(s.Components["grpc"]) > 0 && s.Components["grpc"][0] == 0
+}
