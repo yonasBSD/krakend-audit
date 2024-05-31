@@ -113,6 +113,9 @@
         "input_query_strings": ["*"],
         "input_headers": ["*"],
 		"extra_config": {
+            "github.com/devopsfaith/krakend/transport/http/client/executor": {
+                "name": "no-redirect"
+            }
 		},
 		"backend": [{
 			"url_pattern": "/",

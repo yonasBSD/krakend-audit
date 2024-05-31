@@ -15,6 +15,7 @@ import (
 	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
 	"github.com/luraproject/lura/v2/proxy"
 	router "github.com/luraproject/lura/v2/router/gin"
+	client "github.com/luraproject/lura/v2/transport/http/client/plugin"
 	server "github.com/luraproject/lura/v2/transport/http/server/plugin"
 )
 
@@ -47,32 +48,33 @@ func hasTelemetryMissingName(s *Service) bool {
 	return false
 }
 
-func hasDeprecatedPluginVirtualHost(s *Service) bool {
-	serverPlugins, ok := s.Components[server.Namespace]
-	if !ok {
+func hasDeprecatedServerPlugin(pluginName string) func(s *Service) bool {
+	return func(s *Service) bool {
+		serverPlugins, ok := s.Components[server.Namespace]
+		if !ok {
+			return false
+		}
+		if len(serverPlugins) < 1 {
+			return false
+		}
+		if hasBit(serverPlugins[0], parseServerPlugin(pluginName)) {
+			return true
+		}
 		return false
 	}
-	if len(serverPlugins) < 1 {
-		return false
-	}
-	if hasBit(serverPlugins[0], parseServerPlugin("virtualhost")) {
-		return true
-	}
-	return false
 }
 
-func hasDeprecatedPluginStaticFileSystem(s *Service) bool {
-	serverPlugins, ok := s.Components[server.Namespace]
-	if !ok {
+func hasDeprecatedClientPlugin(pluginName string) func(s *Service) bool {
+	return func(s *Service) bool {
+		compID := parseClientPlugin(pluginName)
+		for _, ep := range s.Endpoints {
+			comp, ok := ep.Components[client.Namespace]
+			if ok && len(comp) > 0 && comp[0] == compID {
+				return true
+			}
+		}
 		return false
 	}
-	if len(serverPlugins) < 1 {
-		return false
-	}
-	if hasBit(serverPlugins[0], parseServerPlugin("static-filesystem")) {
-		return true
-	}
-	return false
 }
 
 func hasApiKeys(s *Service) bool {
