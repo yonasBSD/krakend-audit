@@ -45,7 +45,7 @@ func ExampleAudit() {
 	// 14: 5.1.5 MEDIUM  	Declare explicit endpoints instead of using /__catchall.
 	// 15: 5.1.6 MEDIUM  	Avoid using multiple write methods in endpoint definitions.
 	// 16: 5.1.7 MEDIUM  	Avoid using sequential proxy.
-	// 17: 7.1.3 HIGH  	Do not use deprecated plugin basic-auth. Please move your configuration to the namespace auth/basic to use the new component. See: https://www.krakend.io/docs/enterprise/authentication/basic-authentication/ .
-	// 18: 7.1.7 HIGH  	Do not use deprecated plugin no-redirect. Please visit https://www.krakend.io/docs/enterprise/backends/client-redirect/#migration-from-old-plugin to upgrade to the new options.
+	// 17: 7.1.3 HIGH  	Avoid using deprecated plugin basic-auth. Please move your configuration to the namespace auth/basic to use the new component. See: https://www.krakend.io/docs/enterprise/authentication/basic-authentication/ .
+	// 18: 7.1.7 HIGH  	Avoid using deprecated plugin no-redirect. Please visit https://www.krakend.io/docs/enterprise/backends/client-redirect/#migration-from-old-plugin to upgrade to the new options.
 
 }
