@@ -15,6 +15,7 @@ import (
 	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
 	"github.com/luraproject/lura/v2/proxy"
 	router "github.com/luraproject/lura/v2/router/gin"
+	client "github.com/luraproject/lura/v2/transport/http/client/plugin"
 	server "github.com/luraproject/lura/v2/transport/http/server/plugin"
 )
 
@@ -40,6 +41,40 @@ func hasBasicAuth(s *Service) bool {
 	}
 
 	return false
+}
+
+func hasTelemetryMissingName(s *Service) bool {
+	// TODO: implement this check
+	return false
+}
+
+func hasDeprecatedServerPlugin(pluginName string) func(s *Service) bool {
+	return func(s *Service) bool {
+		serverPlugins, ok := s.Components[server.Namespace]
+		if !ok {
+			return false
+		}
+		if len(serverPlugins) < 1 {
+			return false
+		}
+		if hasBit(serverPlugins[0], parseServerPlugin(pluginName)) {
+			return true
+		}
+		return false
+	}
+}
+
+func hasDeprecatedClientPlugin(pluginName string) func(s *Service) bool {
+	return func(s *Service) bool {
+		compID := parseClientPlugin(pluginName)
+		for _, ep := range s.Endpoints {
+			comp, ok := ep.Components[client.Namespace]
+			if ok && len(comp) > 0 && comp[0] == compID {
+				return true
+			}
+		}
+		return false
+	}
 }
 
 func hasApiKeys(s *Service) bool {
@@ -194,6 +229,21 @@ func hasNoRatelimit(s *Service) bool {
 			}
 		}
 	}
+
+	_, ok = s.Components["qos/ratelimit/service"]
+	if ok {
+		return false
+	}
+
+	serverPlugins, ok := s.Components[server.Namespace]
+	if ok && len(serverPlugins) > 0 {
+		pluginsBitset := serverPlugins[0]
+		redisRateLimitBit := parseServerPlugin("redis-ratelimit")
+		if hasBit(pluginsBitset, redisRateLimitBit) {
+			return false
+		}
+	}
+
 	return true
 }
 
@@ -252,6 +302,12 @@ func hasSeveralTelemetryComponents(s *Service) bool {
 			tot++
 		}
 	}
+
+	otel, okOTEL := s.Components["telemetry/opentelemetry"]
+	if okOTEL && len(otel) >= 5 {
+		// OTL enabled metrics + prometheus
+		tot += otel[2] + otel[4]
+	}
 	return tot > 1
 }
 
@@ -259,7 +315,30 @@ func hasNoTracing(s *Service) bool {
 	_, ok1 := s.Components[opencensus.Namespace]
 	_, ok2 := s.Components["telemetry/newrelic"]
 	_, ok3 := s.Components["telemetry/instana"]
-	return !ok1 && !ok2 && !ok3
+
+	otel, okOTEL := s.Components["telemetry/opentelemetry"]
+	if okOTEL {
+		// in position 3 we have number of enabled OTEL exporters for traces:
+		if len(otel) < 4 || otel[3] < 1 {
+			okOTEL = false
+		}
+	}
+	return !ok1 && !ok2 && !ok3 && !okOTEL
+}
+
+func hasDeprecatedInstana(s *Service) bool {
+	_, ok := s.Components["telemetry/instana"]
+	return ok
+}
+
+func hasDeprecatedGanalytics(s *Service) bool {
+	_, ok := s.Components["telemetry/ganalytics"]
+	return ok
+}
+
+func hasDeprecatedOpenCensus(s *Service) bool {
+	_, ok := s.Components[opencensus.Namespace]
+	return ok
 }
 
 func hasNoLogging(s *Service) bool {
@@ -310,4 +389,8 @@ func hasAllEndpointsAsNoop(s *Service) bool {
 
 func hasSequentialStart(s *Service) bool {
 	return hasBit(s.Details[0], ServiceSequentialStart) && len(s.Agents) >= 10
+}
+
+func hasEmptyGRPCServer(s *Service) bool {
+	return len(s.Components["grpc"]) > 0 && s.Components["grpc"][0] == 0
 }

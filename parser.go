@@ -424,6 +424,75 @@ func parseComponents(cfg config.ExtraConfig) Component {
 			batchSize, _ := cfg["batch_size"].(int)
 			timerWakeupSecs, _ := cfg["timer_wake_up_seconds"].(int)
 			components[c] = []int{eventQueueSize, batchSize, timerWakeupSecs}
+		case "telemetry/opentelemetry":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			metricReportingPeriodFloat, periodOk := cfg["metric_reporting_period"].(float64)
+			metricReportingPeriod := int(metricReportingPeriodFloat)
+			if !periodOk {
+				metricReportingPeriod = -1
+			}
+			traceSampleRateFloat, rateOk := cfg["trace_sample_rate"].(float64)
+			traceSampleRatePercent := int(traceSampleRateFloat * 100.0)
+			if !rateOk {
+				traceSampleRatePercent = -1
+			}
+			numOTLPMetrics := 0
+			numOTLPTraces := 0
+			numPrometheus := 0
+			if exporters, ok := cfg["exporters"].(map[string]interface{}); ok {
+				if prom, ok := exporters["prometheus"].([]interface{}); ok {
+					for _, p := range prom {
+						if po, ok := p.(map[string]interface{}); ok {
+							if b, ok := po["disable_metrics"].(bool); !ok || !b {
+								numPrometheus += 1
+							}
+						}
+					}
+				}
+				if otlp, ok := exporters["otlp"].([]interface{}); ok {
+					for _, o := range otlp {
+						if oo, ok := o.(map[string]interface{}); ok {
+							if b, ok := oo["disable_metrics"].(bool); !ok || !b {
+								numOTLPMetrics += 1
+							}
+							if b, ok := oo["disable_traces"].(bool); !ok || !b {
+								numOTLPTraces += 1
+							}
+						}
+					}
+				}
+			}
+			components[c] = []int{
+				metricReportingPeriod,  // warn about too low values in prod
+				traceSampleRatePercent, // warn about too high values in prod
+				numOTLPMetrics,         // to check if we do not have metrics
+				numOTLPTraces,          // to check if we do not have traces
+				numPrometheus,          // to check if we do not have metrics
+			}
+		case "grpc":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			// we need to know if we are using a server and check if we
+			// are also using h2c
+			server, serverOk := cfg["server"].(map[string]interface{})
+			if serverOk {
+				numServices := 0
+				svcs, ok := server["services"].([]interface{})
+				if ok {
+					numServices = len(svcs)
+				}
+				components[c] = []int{
+					numServices, // warn about empty lists of services
+				}
+			}
+
 		default:
 			components[c] = []int{}
 		}

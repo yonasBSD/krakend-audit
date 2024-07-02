@@ -20,14 +20,15 @@ func TestAudit_all(t *testing.T) {
 			"2.2.3",
 			"2.2.4",
 			"3.1.1",
-			"3.1.2",
+			// "3.1.2", -- we added service level rate limit
 			"3.1.3",
 			"3.3.1",
 			"3.3.2",
 			"3.3.3",
 			"3.3.4",
 			"4.1.1",
-			"4.2.1",
+			"4.1.3", // -- we have prometheus and otel metrics
+			// "4.2.1", -- opentelemetryis enabled for tracing
 			"4.3.1",
 			"5.1.1",
 			"5.1.2",
@@ -37,6 +38,8 @@ func TestAudit_all(t *testing.T) {
 			"5.1.6",
 			"5.1.7",
 			// "5.2.2", -- we added multiple backends to the test to check for multiple unsafe methods
+			"7.1.3", // deprecated server plugin basic auth
+			"7.1.7", // deprecated client plugin no-redirect
 		},
 		levels: []string{SeverityCritical, SeverityHigh, SeverityMedium, SeverityLow},
 	}
@@ -55,14 +58,15 @@ func TestAudit_exclude(t *testing.T) {
 			"2.2.3",
 			"2.2.4",
 			"3.1.1",
-			"3.1.2",
+			// "3.1.2", -- add added service level rate limit
 			"3.1.3",
 			"3.3.1",
 			"3.3.2",
 			"3.3.3",
 			"3.3.4",
 			"4.1.1",
-			"4.2.1",
+			"4.1.3", // -- we have prometheus and otel metrics
+			// "4.2.1", -- opentelemetry is enabled for tracing
 			"4.3.1",
 			"5.1.1",
 			"5.1.2",
@@ -72,6 +76,8 @@ func TestAudit_exclude(t *testing.T) {
 			"5.1.6",
 			"5.1.7",
 			// "5.2.2", -- we added multiple backends to the test to check for multiple unsafe methods
+			"7.1.3", // deprecated plugin basic-auth
+			"7.1.7", // deprecated client plugin no-redirect
 		},
 		exclude: []string{"1.1.1", "1.1.2"},
 		levels:  []string{SeverityCritical, SeverityHigh, SeverityMedium, SeverityLow},
