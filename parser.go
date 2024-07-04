@@ -61,6 +61,9 @@ func Parse(cfg *config.ServiceConfig) Service {
 		if len(cfg.TLS.CaCerts) > 0 {
 			v1 = addBit(v1, ServiceTLSCaCerts)
 		}
+		if cfg.TLS.PublicKey != "" || cfg.TLS.PrivateKey != "" {
+			v1 = addBit(v1, ServiceTLSPrivPubKey)
+		}
 	}
 
 	if cfg.Echo {
