@@ -341,6 +341,10 @@ func hasDeprecatedOpenCensus(s *Service) bool {
 	return ok
 }
 
+func hasDeprecatedTLSPrivPubKey(s *Service) bool {
+	return hasBit(s.Details[0], ServiceTLSPrivPubKey)
+}
+
 func hasNoLogging(s *Service) bool {
 	_, ok1 := s.Components[gologging.Namespace]
 	_, ok2 := s.Components[gelf.Namespace]

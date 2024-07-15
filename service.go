@@ -111,6 +111,7 @@ const (
 	ServiceTLSCaCerts
 	ServiceEcho
 	ServiceUseH2C
+	ServiceTLSPrivPubKey
 )
 
 const (

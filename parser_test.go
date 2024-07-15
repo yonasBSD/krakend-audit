@@ -57,7 +57,7 @@ func TestParse(t *testing.T) {
 		return
 	}
 
-	if result.Details[0] != 4028 {
+	if result.Details[0] != 8124 {
 		t.Errorf("unexpected service details. have: %d, want: 4028", result.Details[0])
 	}
 
