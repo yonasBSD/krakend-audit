@@ -228,8 +228,8 @@ github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/leodido/go-urn v1.2.4 h1:XlAE/cm/ms7TE/VMVoduSpNBoyc2dOxHs5MZSwAN63Q=
 github.com/leodido/go-urn v1.2.4/go.mod h1:7ZrI8mTSeBSHl/UaRyKQW1qZeMgak41ANeCNaVckg+4=
-github.com/luraproject/lura/v2 v2.6.4-0.20240704173132-be5c8bd69611 h1:EBtzYy+k27/WK/4+MpgDdK1kJU1pA6ZzeETlPHZVneQ=
-github.com/luraproject/lura/v2 v2.6.4-0.20240704173132-be5c8bd69611/go.mod h1:D0+LPLJAuT9DcfjB4xvVMCnKmAMQikdbcXmYLdmEA6A=
+github.com/luraproject/lura/v2 v2.7.0 h1:9s4Pt56zBfZMLRW+igfa3tWxJJXpOcEnmVpWUkDyr3s=
+github.com/luraproject/lura/v2 v2.7.0/go.mod h1:D0+LPLJAuT9DcfjB4xvVMCnKmAMQikdbcXmYLdmEA6A=
 github.com/mattn/go-colorable v0.1.9/go.mod h1:u6P/XSegPjTcexA+o6vUJrdnUu04hMope9wVRipJSqc=
 github.com/mattn/go-colorable v0.1.12/go.mod h1:u5H1YNBxpqRaxsYJYSkiCWKzEfiAb1Gb520KVy5xxl4=
 github.com/mattn/go-colorable v0.1.13 h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=

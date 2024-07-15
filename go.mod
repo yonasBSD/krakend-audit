@@ -17,7 +17,7 @@ require (
 	github.com/krakendio/krakend-ratelimit/v3 v3.1.0
 	github.com/krakendio/krakend-rss/v2 v2.0.1
 	github.com/krakendio/krakend-xml/v2 v2.1.0
-	github.com/luraproject/lura/v2 v2.6.4-0.20240704173132-be5c8bd69611
+	github.com/luraproject/lura/v2 v2.7.0
 	github.com/mitchellh/mapstructure v1.5.0
 )
 
