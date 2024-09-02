@@ -3,7 +3,6 @@ package audit
 import (
 	"crypto/rand"
 	"fmt"
-	"math/big"
 	"reflect"
 	"testing"
 	"time"
@@ -21,12 +20,11 @@ import (
 )
 
 func intn(k int) int {
-	v := big.NewInt(int64(k))
-	n, err := rand.Int(rand.Reader, v)
+	n, err := rand.Read(nil)
 	if err != nil {
 		return time.Now().Nanosecond() % k
 	}
-	return int(n.Int64())
+	return n % k
 }
 
 func TestMarshal(t *testing.T) {
