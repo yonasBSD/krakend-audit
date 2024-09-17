@@ -1,10 +1,11 @@
 package audit
 
 import (
+	"crypto/rand"
 	"fmt"
-	"math/rand"
 	"reflect"
 	"testing"
+	"time"
 
 	bf "github.com/krakendio/bloomfilter/v2/krakend"
 	botdetector "github.com/krakendio/krakend-botdetector/v2/krakend"
@@ -18,8 +19,15 @@ import (
 	server "github.com/luraproject/lura/v2/transport/http/server/plugin"
 )
 
+func intn(k int) int {
+	n, err := rand.Read(nil)
+	if err != nil {
+		return time.Now().Nanosecond() % k
+	}
+	return n % k
+}
+
 func TestMarshal(t *testing.T) {
-	rand.Seed(1)
 	result := Parse(generateCfg())
 
 	b, err := Marshal(&result)
@@ -88,56 +96,56 @@ func generateCfg() *config.ServiceConfig {
 	for i := 0; i < 1000; i++ {
 		var endpoints []*config.EndpointConfig
 
-		for k := 0; k < 1+rand.Intn(3); k++ {
+		for k := 0; k < 1+intn(3); k++ {
 			e := &config.EndpointConfig{
-				Endpoint:       fmt.Sprintf("/foo/%3d", rand.Intn(100)),
+				Endpoint:       fmt.Sprintf("/foo/%3d", intn(100)),
 				OutputEncoding: "json",
 				Backend:        []*config.Backend{},
 				ExtraConfig: config.ExtraConfig{
-					fmt.Sprintf("component%3d", rand.Intn(100)): true,
-					fmt.Sprintf("component%3d", rand.Intn(100)): true,
-					plugin.Namespace: map[string]interface{}{},
-					proxy.Namespace:  map[string]interface{}{},
+					fmt.Sprintf("component%3d", intn(100)): true,
+					fmt.Sprintf("component%3d", intn(100)): true,
+					plugin.Namespace:                       map[string]interface{}{},
+					proxy.Namespace:                        map[string]interface{}{},
 				},
 			}
-			for j := 0; j < 1+rand.Intn(5); j++ {
+			for j := 0; j < 1+intn(5); j++ {
 				e.Backend = append(e.Backend, &config.Backend{
-					URLPattern: fmt.Sprintf("/foo/%3d", rand.Intn(100)),
+					URLPattern: fmt.Sprintf("/foo/%3d", intn(100)),
 					Group:      fmt.Sprintf("group-%3d", j),
 					AllowList:  []string{"foo", "bar"},
 					Mapping:    map[string]string{"foo": "foobar"},
 					Encoding:   "json",
 					ExtraConfig: config.ExtraConfig{
-						fmt.Sprintf("component%3d", rand.Intn(100)): true,
-						fmt.Sprintf("component%3d", rand.Intn(100)): true,
-						client.Namespace: map[string]interface{}{},
+						fmt.Sprintf("component%3d", intn(100)): true,
+						fmt.Sprintf("component%3d", intn(100)): true,
+						client.Namespace:                       map[string]interface{}{},
 					},
 				})
 			}
 			endpoints = append(endpoints, e)
 		}
-		for k := 0; k < 1+rand.Intn(3); k++ {
+		for k := 0; k < 1+intn(3); k++ {
 			e := &config.EndpointConfig{
-				Endpoint:       fmt.Sprintf("/foo/%3d", rand.Intn(100)),
+				Endpoint:       fmt.Sprintf("/foo/%3d", intn(100)),
 				OutputEncoding: "no-op",
 				Backend: []*config.Backend{
 					{
-						URLPattern: fmt.Sprintf("/foo/%3d", rand.Intn(100)),
+						URLPattern: fmt.Sprintf("/foo/%3d", intn(100)),
 						Group:      "first",
 						AllowList:  []string{"foo", "bar"},
 						Mapping:    map[string]string{"foo": "foobar"},
 						Encoding:   "no-op",
 						ExtraConfig: config.ExtraConfig{
-							fmt.Sprintf("component%3d", rand.Intn(100)): true,
-							client.Namespace: map[string]interface{}{},
+							fmt.Sprintf("component%3d", intn(100)): true,
+							client.Namespace:                       map[string]interface{}{},
 						},
 					},
 				},
 				ExtraConfig: config.ExtraConfig{
-					fmt.Sprintf("component%3d", rand.Intn(100)): true,
-					fmt.Sprintf("component%3d", rand.Intn(100)): true,
-					plugin.Namespace: map[string]interface{}{},
-					proxy.Namespace:  map[string]interface{}{},
+					fmt.Sprintf("component%3d", intn(100)): true,
+					fmt.Sprintf("component%3d", intn(100)): true,
+					plugin.Namespace:                       map[string]interface{}{},
+					proxy.Namespace:                        map[string]interface{}{},
 				},
 			}
 			endpoints = append(endpoints, e)
