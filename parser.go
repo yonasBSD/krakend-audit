@@ -104,9 +104,9 @@ func parseAsyncAgents(as []*config.AsyncAgent) []Agent {
 
 const (
 	BitEndpointWildcard             int = 0
-	BitEndpointQueryStringWildcard      = 1
-	BitEndpointHeaderStringWildcard     = 2
-	BitEndpointCatchAll                 = 3
+	BitEndpointQueryStringWildcard  int = 1
+	BitEndpointHeaderStringWildcard int = 2
+	BitEndpointCatchAll             int = 3
 )
 
 func parseEndpoints(es []*config.EndpointConfig) []Endpoint {
