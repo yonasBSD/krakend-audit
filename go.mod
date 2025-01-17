@@ -2,7 +2,7 @@ module github.com/krakendio/krakend-audit
 
 go 1.21.0
 
-toolchain go1.23.4
+toolchain go1.22.10
 
 require (
 	github.com/krakendio/bloomfilter/v2 v2.0.4
