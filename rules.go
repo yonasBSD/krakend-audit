@@ -6,6 +6,7 @@ import (
 	cors "github.com/krakendio/krakend-cors/v2"
 	gelf "github.com/krakendio/krakend-gelf/v2"
 	gologging "github.com/krakendio/krakend-gologging/v2"
+	httpcache "github.com/krakendio/krakend-httpcache/v2"
 	httpsecure "github.com/krakendio/krakend-httpsecure/v2"
 	jose "github.com/krakendio/krakend-jose/v2"
 	logstash "github.com/krakendio/krakend-logstash/v2"
@@ -397,4 +398,19 @@ func hasSequentialStart(s *Service) bool {
 
 func hasEmptyGRPCServer(s *Service) bool {
 	return len(s.Components["grpc"]) > 0 && s.Components["grpc"][0] == 0
+}
+
+func hasUnlimitedCache(s *Service) bool {
+	for _, e := range s.Endpoints {
+		for _, b := range e.Backends {
+			cache, ok := b.Components[httpcache.Namespace]
+			if !ok {
+				continue
+			}
+			if !hasBit(cache[0], 1) || !hasBit(cache[0], 2) {
+				return true
+			}
+		}
+	}
+	return false
 }

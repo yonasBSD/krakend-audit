@@ -99,6 +99,7 @@ var ruleSet = []Rule{
 	NewRule("2.2.3", SeverityHigh, "Avoid passing all input headers to the backend.", hasHeadersWildcard),
 	NewRule("2.2.4", SeverityHigh, "Avoid passing all input query strings to the backend.", hasQueryStringWildcard),
 	NewRule("2.2.5", SeverityLow, "Avoid exposing gRPC server without services declared.", hasEmptyGRPCServer),
+	NewRule("2.3.1", SeverityMedium, "Limit the amount of cacheable content.", hasUnlimitedCache),
 
 	/*
 	   Section 3: Traffic management / rate limits

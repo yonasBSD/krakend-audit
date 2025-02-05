@@ -10,6 +10,7 @@ import (
 	botdetector "github.com/krakendio/krakend-botdetector/v2/krakend"
 	gelf "github.com/krakendio/krakend-gelf/v2"
 	gologging "github.com/krakendio/krakend-gologging/v2"
+	httpcache "github.com/krakendio/krakend-httpcache/v2"
 	httpsecure "github.com/krakendio/krakend-httpsecure/v2"
 	jose "github.com/krakendio/krakend-jose/v2"
 	logstash "github.com/krakendio/krakend-logstash/v2"
@@ -93,6 +94,7 @@ var componentAlias = map[string]string{
 	luaproxy.ProxyNamespace:            "7",
 	luaproxy.BackendNamespace:          "8",
 	luarouter.Namespace:                "9",
+	httpcache.Namespace:                "10",
 }
 
 func applyAlias(s Service) Service {
