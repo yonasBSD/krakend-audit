@@ -1,8 +1,8 @@
 module github.com/krakendio/krakend-audit
 
-go 1.21.0
+go 1.22
 
-toolchain go1.22.10
+toolchain go1.23.2
 
 require (
 	github.com/krakendio/bloomfilter/v2 v2.0.4
@@ -11,6 +11,7 @@ require (
 	github.com/krakendio/krakend-cors/v2 v2.0.1
 	github.com/krakendio/krakend-gelf/v2 v2.0.1
 	github.com/krakendio/krakend-gologging/v2 v2.0.3
+	github.com/krakendio/krakend-httpcache/v2 v2.1.0
 	github.com/krakendio/krakend-httpsecure/v2 v2.0.1
 	github.com/krakendio/krakend-jose/v2 v2.7.0
 	github.com/krakendio/krakend-logstash/v2 v2.0.1
@@ -100,8 +101,10 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/krakend/go-auth0/v2 v2.0.1 // indirect
+	github.com/krakend/lru v0.0.0-20250121172718-0e3a6eab620d // indirect
 	github.com/krakendio/binder v0.0.0-20241115150014-29ceb1a9414b // indirect
 	github.com/krakendio/flatmap v1.1.1 // indirect
+	github.com/krakendio/httpcache v0.0.0-20221129153752-65a87a5c2bc5 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

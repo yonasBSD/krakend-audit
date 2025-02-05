@@ -191,7 +191,8 @@
           "extra_config": {
             "github.com/devopsfaith/krakend-lua/proxy/backend": {
               "post": "some_lua_code()"
-            }
+            },
+            "github.com/devopsfaith/krakend-httpcache": {}
           }
         }
       ]
@@ -254,6 +255,21 @@
           "subprotocols": ["streamlit"]
         }
       }
+    },
+    {
+      "endpoint": "/cached",
+      "backend": [
+        {
+          "url_pattern": "/",
+          "extra_config": {
+            "github.com/devopsfaith/krakend-httpcache": {
+              "shared": true,
+              "max_items": 100,
+              "max_size": 10000
+            }
+          }
+        }
+      ]
     },
     {
       "endpoint": "/__catchall",

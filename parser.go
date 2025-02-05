@@ -9,6 +9,7 @@ import (
 
 	bf "github.com/krakendio/bloomfilter/v2/krakend"
 	botdetector "github.com/krakendio/krakend-botdetector/v2/krakend"
+	httpcache "github.com/krakendio/krakend-httpcache/v2"
 	luaproxy "github.com/krakendio/krakend-lua/v2/proxy"
 	luarouter "github.com/krakendio/krakend-lua/v2/router"
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
@@ -651,11 +652,28 @@ func parseComponents(cfg config.ExtraConfig) Component { // skipcq: GO-R1005
 				continue
 			}
 			f := 0
-			if _, ok = cfg["pre"].(string); ok {
+			if _, ok := cfg["pre"].(string); ok {
 				f = addBit(f, 0)
 			}
-			if _, ok = cfg["post"].(string); ok {
+			if _, ok := cfg["post"].(string); ok {
 				f = addBit(f, 1)
+			}
+			components[c] = []int{f}
+		case httpcache.Namespace:
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			f := 0
+			if e, ok := cfg["shared"].(bool); ok && e {
+				f = addBit(f, 0)
+			}
+			if m, ok := cfg["max_items"].(float64); ok && m > 0 {
+				f = addBit(f, 1)
+			}
+			if m, ok := cfg["max_size"].(float64); ok && m > 0 {
+				f = addBit(f, 2)
 			}
 			components[c] = []int{f}
 		default:

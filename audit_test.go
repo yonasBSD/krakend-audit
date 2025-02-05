@@ -19,6 +19,7 @@ func TestAudit_all(t *testing.T) {
 			"2.2.2",
 			"2.2.3",
 			"2.2.4",
+			"2.3.1",
 			"3.1.1",
 			// "3.1.2", -- we added service level rate limit
 			"3.1.3",
@@ -58,6 +59,7 @@ func TestAudit_exclude(t *testing.T) {
 			"2.2.2",
 			"2.2.3",
 			"2.2.4",
+			"2.3.1",
 			"3.1.1",
 			// "3.1.2", -- add added service level rate limit
 			"3.1.3",
