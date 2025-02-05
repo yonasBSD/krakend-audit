@@ -1,153 +1,281 @@
 {
-	"$schema": "https://www.krakend.io/schema/v3.json",
-	"version": 3,
-	"debug_endpoint": true,
-	"echo_endpoint": true,
-    "use_h2c": true,
-	"extra_config": {
-        "qos/ratelimit/service": {
-            "max_rate": 50,
-            "client_mac_rate": 5,
-            "startegy": "ip"
-        },
-		"github_com/devopsfaith/krakend/transport/http/server/handler": {
-			"name": ["basic-auth"]
-		},
-        "github_com/luraproject/lura/router/gin": {
-            "use_h2c": true
-        },
-        "grpc": {
-            "catalog": [
-                "./grpc/definitions"
-            ],
-            "server": {
-                "services": [
-                    {
-                        "name": "flight_finder.Flights",
-                        "methods": [
-                            {
-                                "name": "FindFlight",
-                                "input_headers": [
-                                    "*"
-                                ],
-                                "payload_params": {
-                                    "page.cursor": "cursor"
-                                },
-                                "backend": [
-                                    {
-                                        "host": [
-                                            "example.com:4242"
-                                        ],
-                                        "url_pattern": "/flight_finder.Flights/FindFlight",
-                                        "extra_config": {
-                                            "backend/grpc": {
-                                                "use_request_body": true
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "method": "GET",
-                                        "host": [
-                                            "http://example.com:8000"
-                                        ],
-                                        "url_pattern": "/articles.json?q={cursor}"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "telemetry/opentelemetry": {
-            "exporters": {
-                "otlp": [
-                    {
-                        "name": "newrelic",
-                        "host": "example.com",
-                        "disable_metrics": true
-                    },
-                    {
-                        "name": "datadog",
-                        "host": "example.com"
-                    }
-                ],
-                "prometheus": [
-                    {
-                        "name": "default_prom"
-                    }
-                ]
-            },
-            "metric_reporting_period": 50,
-            "trace_sample_rate": 1
-        },
-		"auth/api-keys": {}
-	},
-	"tls":{
-		"public_key": "/path/to/cert.pem",
-    	"private_key": "/path/to/key.pem",
-    	"disabled": true
-	},
-	"disable_rest":true,
-	"allow_insecure_connections":true,
-	"endpoints": [{
-		"endpoint": "/protected/resource",
-		"timeout": "140s",
-		"extra_config": {
-			"github.com/devopsfaith/krakend-jose/validator": {
-				"alg": "RS256",
-				"audience": ["http://api.example.com"],
-				"roles_key": "http://api.example.com/custom/roles",
-				"roles": ["user", "admin"],
-				"jwk_url": "https://albert-test.auth0.com/.well-known/jwks.json",
-				"cache": true
-			}
-		},
-		"backend": [{
-			"url_pattern": "/"
-		}]
-	},
-	{
-		"endpoint": "/wildcarded/resource/*",
-		"timeout": "10s",
-        "input_query_strings": ["*"],
-        "input_headers": ["*"],
-		"extra_config": {
-            "github.com/devopsfaith/krakend/transport/http/client/executor": {
-                "name": "no-redirect"
-            }
-		},
-		"backend": [{
-			"url_pattern": "/",
-            "extra_config": {
-                "backend/http/client": {
-                    "client_tls": {
-                        "allow_insecure_connections": true
-                    }
-                }
-            }
-		}]
-	},
-	{
-		"endpoint": "/__catchall",
-		"timeout": "10s",
-		"extra_config": {
-            "github.com/devopsfaith/krakend/proxy": {
-                "sequential": true
-            }
-		},
-		"backend": [
-            {
-                "url_pattern": "/"
-            },
-            {
-                "method": "POST",
-                "url_pattern": "example.com/foo"
-            },
-            {
-                "method": "POST",
-                "url_pattern": "example.com/bar"
-            }
+  "$schema": "https://www.krakend.io/schema/krakend.json",
+  "version": 3,
+  "debug_endpoint": true,
+  "echo_endpoint": true,
+  "use_h2c": true,
+  "extra_config": {
+    "modifier/response-headers": {
+      "add": {
+        "X-Hello": [
+          "World"
         ]
-	}]
+      },
+      "replace": {
+        "Cache-Control": [
+          "no-store"
+        ],
+        "Vary": [
+          "foo",
+          "bar",
+          "foobar"
+        ]
+      },
+      "delete": [
+        "Server"
+      ],
+      "rename": {
+        "X-Krakend-Completed": "X-Completed"
+      }
+    },
+    "github.com/devopsfaith/krakend-lua/router": {
+      "pre": "some_lua_code()"
+    },
+    "qos/ratelimit/service": {
+      "max_rate": 50,
+      "client_mac_rate": 5,
+      "startegy": "ip"
+    },
+    "github_com/devopsfaith/krakend/transport/http/server/handler": {
+      "name": [
+        "basic-auth"
+      ]
+    },
+    "github_com/luraproject/lura/router/gin": {
+      "use_h2c": true
+    },
+    "grpc": {
+      "catalog": [
+        "./grpc/definitions"
+      ],
+      "server": {
+        "services": [
+          {
+            "name": "flight_finder.Flights",
+            "methods": [
+              {
+                "name": "FindFlight",
+                "input_headers": [
+                  "*"
+                ],
+                "payload_params": {
+                  "page.cursor": "cursor"
+                },
+                "backend": [
+                  {
+                    "host": [
+                      "example.com:4242"
+                    ],
+                    "url_pattern": "/flight_finder.Flights/FindFlight",
+                    "extra_config": {
+                      "backend/grpc": {
+                        "use_request_body": true
+                      }
+                    }
+                  },
+                  {
+                    "method": "GET",
+                    "host": [
+                      "http://example.com:8000"
+                    ],
+                    "url_pattern": "/articles.json?q={cursor}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "telemetry/opentelemetry": {
+      "exporters": {
+        "otlp": [
+          {
+            "name": "newrelic",
+            "host": "example.com",
+            "disable_metrics": true
+          },
+          {
+            "name": "datadog",
+            "host": "example.com"
+          }
+        ],
+        "prometheus": [
+          {
+            "name": "default_prom"
+          }
+        ]
+      },
+      "metric_reporting_period": 50,
+      "trace_sample_rate": 1
+    },
+    "auth/api-keys": {}
+  },
+  "tls": {
+    "public_key": "/path/to/cert.pem",
+    "private_key": "/path/to/key.pem",
+    "disabled": true
+  },
+  "disable_rest": true,
+  "allow_insecure_connections": true,
+  "endpoints": [
+    {
+      "endpoint": "/protected/resource",
+      "timeout": "140s",
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "audience": [
+            "http://api.example.com"
+          ],
+          "roles_key": "http://api.example.com/custom/roles",
+          "roles": [
+            "user",
+            "admin"
+          ],
+          "jwk_url": "https://albert-test.auth0.com/.well-known/jwks.json",
+          "cache": true
+        },
+        "github.com/devopsfaith/krakend-lua/proxy": {
+          "pre": "some_lua_code()",
+          "post": "some_more_lua_code()"
+        },
+        "validation/response-json-schema": {
+          "schema": {
+            "type": "integer"
+          },
+          "error": {
+            "body": "error: meh, try again",
+            "status": 400,
+            "content_type": "application/x-yaml"
+          }
+        },
+        "modifier/response-values": {
+          "modifiers": [
+            {
+              "regexp": {
+                "field": "data.credit_card",
+                "find": "(^\\d{4})(.*)",
+                "replace": "${1}-XXXX"
+              }
+            },
+            {
+              "regexp": {
+                "field": "surname",
+                "find": "(.*)",
+                "replace": "Anonymous"
+              }
+            },
+            {
+              "upper": {
+                "field": "surname"
+              }
+            },
+            {
+              "lower": {
+                "field": "quiet"
+              }
+            },
+            {
+              "trim": {
+                "field": "surname",
+                "find": "A"
+              }
+            }
+          ]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/",
+          "extra_config": {
+            "github.com/devopsfaith/krakend-lua/proxy/backend": {
+              "post": "some_lua_code()"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/wildcarded/resource/*",
+      "timeout": "10s",
+      "input_query_strings": [
+        "*"
+      ],
+      "input_headers": [
+        "*"
+      ],
+      "extra_config": {
+        "github.com/devopsfaith/krakend/transport/http/client/executor": {
+          "name": "no-redirect"
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/",
+          "extra_config": {
+            "backend/http/client": {
+              "client_tls": {
+                "allow_insecure_connections": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/ws",
+      "backend": [
+        {
+          "url_pattern": "/"
+        }
+      ],
+      "extra_config": {
+        "websocket": {
+          "input_headers": [
+            "Cookie",
+            "Authorization"
+          ],
+          "disable_otel_metrics": true,
+          "enable_direct_communication": true,
+          "return_error_details": false,
+          "connect_event": true,
+          "disconnect_event": true,
+          "read_buffer_size": 4096,
+          "write_buffer_size": 4096,
+          "message_buffer_size": 4096,
+          "max_message_size": 3200000,
+          "max_retries": 0,
+          "write_wait": "10s",
+          "pong_wait": "60s",
+          "ping_period": "54s",
+          "timeout": "300s",
+          "backoff_strategy": "exponential",
+          "subprotocols": ["streamlit"]
+        }
+      }
+    },
+    {
+      "endpoint": "/__catchall",
+      "timeout": "10s",
+      "extra_config": {
+        "github.com/devopsfaith/krakend/proxy": {
+          "sequential": true
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/"
+        },
+        {
+          "method": "POST",
+          "url_pattern": "example.com/foo"
+        },
+        {
+          "method": "POST",
+          "url_pattern": "example.com/bar"
+        }
+      ]
+    }
+  ]
 }
