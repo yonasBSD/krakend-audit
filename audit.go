@@ -151,6 +151,9 @@ var ruleSet = []Rule{
 	NewRule("7.1.6", SeverityHigh, "Avoid using deprecated plugin static-filesystem. Please visit https://www.krakend.io/docs/enterprise/endpoints/serve-static-content/#upgrading-from-the-old-plugin-before-v24 to upgrade to the new static-filesystem.", hasDeprecatedClientPlugin("static-filesystem")),
 	NewRule("7.1.7", SeverityHigh, "Avoid using deprecated plugin no-redirect. Please visit https://www.krakend.io/docs/enterprise/backends/client-redirect/#migration-from-old-plugin to upgrade to the new options.", hasDeprecatedClientPlugin("no-redirect")),
 
+	NewRule("7.1.8", SeverityHigh, "Avoid using deprecated plugin content-replacer. Please visit https://www.krakend.io/docs/enterprise/endpoints/content-replacer/#migration-from-old-plugin to upgrade to the new options.", hasDeprecatedReqRespPlugin("content-replacer")),
+	NewRule("7.1.9", SeverityHigh, "Avoid using deprecated plugin response-schema-validator. Please visit https://www.krakend.io/docs/enterprise/endpoints/response-schema-validator/#migration-from-old-plugin to upgrade to the new options.", hasDeprecatedReqRespPlugin("response-schema-validator")),
+
 	// 7.2 Component Deprecations
 	NewRule("7.2.1", SeverityHigh, "Avoid using deprecated component telemetry/ganalytics. Please visit https://www.krakend.io/docs/telemetry/opentelemetry/ to upgrade to OpenTelemetry", hasDeprecatedGanalytics),
 	NewRule("7.2.2", SeverityHigh, "Avoid using deprecated component telemetry/instana. Please visit https://www.krakend.io/docs/telemetry/opentelemetry/ to upgrade to OpenTelemetry", hasDeprecatedInstana),
