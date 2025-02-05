@@ -221,7 +221,7 @@ func parseBackends(bs []*config.Backend) []Backend {
 	return backends
 }
 
-func parseComponents(cfg config.ExtraConfig) Component {
+func parseComponents(cfg config.ExtraConfig) Component { // skipcq: GO-R1005
 	components := Component{}
 	for c, v := range cfg {
 		switch c {
