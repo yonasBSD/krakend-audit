@@ -669,10 +669,10 @@ func parseComponents(cfg config.ExtraConfig) Component { // skipcq: GO-R1005
 			if e, ok := cfg["shared"].(bool); ok && e {
 				f = addBit(f, 0)
 			}
-			if _, ok := cfg["max_items"].(float64); ok {
+			if m, ok := cfg["max_items"].(float64); ok && m > 0 {
 				f = addBit(f, 1)
 			}
-			if _, ok := cfg["max_size"].(float64); ok {
+			if m, ok := cfg["max_size"].(float64); ok && m > 0 {
 				f = addBit(f, 2)
 			}
 			components[c] = []int{f}
