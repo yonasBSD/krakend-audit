@@ -15,6 +15,7 @@ import (
 	ratelimitProxy "github.com/krakendio/krakend-ratelimit/v3/proxy"
 	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
 	"github.com/luraproject/lura/v2/proxy"
+	"github.com/luraproject/lura/v2/proxy/plugin"
 	router "github.com/luraproject/lura/v2/router/gin"
 	client "github.com/luraproject/lura/v2/transport/http/client/plugin"
 	server "github.com/luraproject/lura/v2/transport/http/server/plugin"
@@ -72,6 +73,25 @@ func hasDeprecatedClientPlugin(pluginName string) func(s *Service) bool {
 			comp, ok := ep.Components[client.Namespace]
 			if ok && len(comp) > 0 && comp[0] == compID {
 				return true
+			}
+		}
+		return false
+	}
+}
+
+func hasDeprecatedReqRespPlugin(pluginName string) func(s *Service) bool {
+	return func(s *Service) bool {
+		id := parseRespReqPlugin(pluginName)
+		for _, ep := range s.Endpoints {
+			comp, ok := ep.Components[plugin.Namespace]
+			if ok && hasBit(comp[0], id) {
+				return true
+			}
+			for _, b := range ep.Backends {
+				comp, ok := b.Components[plugin.Namespace]
+				if ok && hasBit(comp[0], id) {
+					return true
+				}
 			}
 		}
 		return false
