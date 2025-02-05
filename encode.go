@@ -13,6 +13,8 @@ import (
 	httpsecure "github.com/krakendio/krakend-httpsecure/v2"
 	jose "github.com/krakendio/krakend-jose/v2"
 	logstash "github.com/krakendio/krakend-logstash/v2"
+	luaproxy "github.com/krakendio/krakend-lua/v2/proxy"
+	luarouter "github.com/krakendio/krakend-lua/v2/router"
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
 	ratelimitProxy "github.com/krakendio/krakend-ratelimit/v3/proxy"
 	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
@@ -85,6 +87,12 @@ var componentAlias = map[string]string{
 	"telemetry/opentelemetry":          "1",
 	"grpc":                             "2",
 	"modifier/response-body-generator": "3",
+	"validation/response-json-schema":  "4",
+	"websocket":                        "5",
+	"modifier/response-headers":        "6",
+	luaproxy.ProxyNamespace:            "7",
+	luaproxy.BackendNamespace:          "8",
+	luarouter.Namespace:                "9",
 }
 
 func applyAlias(s Service) Service {

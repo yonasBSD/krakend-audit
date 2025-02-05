@@ -1,6 +1,7 @@
 package audit
 
 import (
+	"encoding/json"
 	"strings"
 	"time"
 
@@ -8,6 +9,8 @@ import (
 
 	bf "github.com/krakendio/bloomfilter/v2/krakend"
 	botdetector "github.com/krakendio/krakend-botdetector/v2/krakend"
+	luaproxy "github.com/krakendio/krakend-lua/v2/proxy"
+	luarouter "github.com/krakendio/krakend-lua/v2/router"
 	opencensus "github.com/krakendio/krakend-opencensus/v2"
 	ratelimit "github.com/krakendio/krakend-ratelimit/v3/router"
 	rss "github.com/krakendio/krakend-rss/v2"
@@ -218,7 +221,7 @@ func parseBackends(bs []*config.Backend) []Backend {
 	return backends
 }
 
-func parseComponents(cfg config.ExtraConfig) Component {
+func parseComponents(cfg config.ExtraConfig) Component { // skipcq: GO-R1005
 	components := Component{}
 	for c, v := range cfg {
 		switch c {
@@ -496,6 +499,165 @@ func parseComponents(cfg config.ExtraConfig) Component {
 				}
 			}
 
+		case "validation/response-json-schema":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			p := make([]int, 4)
+			schemaCfg, schemaCfgOk := cfg["schema"].(map[string]interface{})
+			if schemaCfgOk {
+				schemaStr, _ := json.Marshal(schemaCfg)
+				p[0] = len(schemaStr)
+			}
+			errorCfg, errorCfgOk := cfg["error"].(map[string]interface{})
+			if errorCfgOk {
+				customError, customErrorOk := errorCfg["body"].(string)
+				if customErrorOk && customError != "" {
+					p[1] = 1
+				}
+				customErrorCode, customErrorCodeOk := errorCfg["status"].(float64)
+				if customErrorCodeOk && customErrorCode > 0 {
+					p[2] = int(customErrorCode)
+				}
+				customErrorType, customErrorTypeOk := errorCfg["content_type"].(string)
+				if customErrorTypeOk && customErrorType != "" {
+					p[3] = 1
+				}
+			}
+			components[c] = p
+		case "modifier/response-values":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			p := make([]int, 6)
+			modifiers, ok := cfg["modifiers"].([]interface{})
+			if ok {
+				p[0] = len(modifiers)
+				for i := range modifiers {
+					var kind string
+					for kind = range modifiers[i].(map[string]interface{}) {
+					}
+					switch kind {
+					case "regexp":
+						p[1]++
+					case "literal":
+						p[2]++
+					case "upper":
+						p[3]++
+					case "lower":
+						p[4]++
+					case "trim":
+						p[5]++
+					}
+				}
+			}
+			components[c] = p
+		case "modifier/response-headers":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			v1 := 0
+			if _, ok := cfg["delete"]; ok {
+				v1 = addBit(v1, 0)
+			}
+			if _, ok := cfg["add"]; ok {
+				v1 = addBit(v1, 1)
+			}
+			if _, ok := cfg["rename"]; ok {
+				v1 = addBit(v1, 2)
+			}
+			if _, ok := cfg["replace"]; ok {
+				v1 = addBit(v1, 3)
+			}
+
+			components[c] = []int{v1}
+		case "websocket":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+
+			d := make([]int, 11)
+
+			d[0] = 0
+			if f, ok := cfg["disable_otel_metrics"].(bool); ok && f {
+				d[0] = addBit(d[0], 0)
+			}
+			if f, ok := cfg["enable_direct_communication"].(bool); ok && f {
+				d[0] = addBit(d[0], 1)
+			}
+			if f, ok := cfg["return_error_details"].(bool); ok && f {
+				d[0] = addBit(d[0], 2)
+			}
+			if f, ok := cfg["connect_event"].(bool); ok && f {
+				d[0] = addBit(d[0], 3)
+			}
+			if f, ok := cfg["disconnect_event"].(bool); ok && f {
+				d[0] = addBit(d[0], 4)
+			}
+
+			if f, ok := cfg["read_buffer_size"].(float64); ok && f > 0 {
+				d[1] = int(f)
+			}
+			if f, ok := cfg["write_buffer_size"].(float64); ok && f > 0 {
+				d[2] = int(f)
+			}
+			if f, ok := cfg["message_buffer_size"].(float64); ok && f > 0 {
+				d[3] = int(f)
+			}
+			if f, ok := cfg["max_message_size"].(float64); ok && f > 0 {
+				d[4] = int(f)
+			}
+			if f, ok := cfg["max_retries"].(float64); ok && f > 0 {
+				d[5] = int(f)
+			}
+
+			if f, ok := cfg["write_wait"].(string); ok && f != "" {
+				if dur, err := time.ParseDuration(f); err == nil {
+					d[6] = int(dur.Milliseconds())
+				}
+			}
+			if f, ok := cfg["pong_wait"].(string); ok && f != "" {
+				if dur, err := time.ParseDuration(f); err == nil {
+					d[7] = int(dur.Milliseconds())
+				}
+			}
+			if f, ok := cfg["ping_period"].(string); ok && f != "" {
+				if dur, err := time.ParseDuration(f); err == nil {
+					d[8] = int(dur.Milliseconds())
+				}
+			}
+			if f, ok := cfg["timeout"].(string); ok && f != "" {
+				if dur, err := time.ParseDuration(f); err == nil {
+					d[9] = int(dur.Milliseconds())
+				}
+			}
+
+			if f, ok := cfg["subprotocols"].([]interface{}); ok {
+				d[10] = len(f)
+			}
+			components[c] = d
+		case luaproxy.ProxyNamespace, luaproxy.BackendNamespace, luarouter.Namespace:
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			f := 0
+			if _, ok = cfg["pre"].(string); ok {
+				f = addBit(f, 0)
+			}
+			if _, ok = cfg["post"].(string); ok {
+				f = addBit(f, 1)
+			}
+			components[c] = []int{f}
 		default:
 			components[c] = []int{}
 		}
