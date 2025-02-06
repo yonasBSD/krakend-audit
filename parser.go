@@ -528,7 +528,7 @@ func parseComponents(cfg config.ExtraConfig) Component { // skipcq: GO-R1005
 				}
 			}
 			components[c] = p
-		case "modifier/response-values":
+		case "modifier/response-body":
 			cfg, ok := v.(map[string]interface{})
 			if !ok {
 				components[c] = []int{}
