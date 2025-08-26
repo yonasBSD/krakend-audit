@@ -1,27 +1,27 @@
-module github.com/krakendio/krakend-audit
+module github.com/krakend/krakend-audit
 
-go 1.23.0
+go 1.23.6
 
-toolchain go1.23.6
+toolchain go1.24.2
 
 require (
-	github.com/krakendio/bloomfilter/v2 v2.0.4
-	github.com/krakendio/krakend-botdetector/v2 v2.1.0
-	github.com/krakendio/krakend-circuitbreaker/v2 v2.0.1
-	github.com/krakendio/krakend-cors/v2 v2.0.1
-	github.com/krakendio/krakend-gelf/v2 v2.0.1
-	github.com/krakendio/krakend-gologging/v2 v2.0.3
-	github.com/krakendio/krakend-httpcache/v2 v2.1.0
-	github.com/krakendio/krakend-httpsecure/v2 v2.0.1
-	github.com/krakendio/krakend-jose/v2 v2.7.0
-	github.com/krakendio/krakend-logstash/v2 v2.0.1
-	github.com/krakendio/krakend-lua/v2 v2.7.0
-	github.com/krakendio/krakend-metrics/v2 v2.0.1
-	github.com/krakendio/krakend-opencensus/v2 v2.1.0
-	github.com/krakendio/krakend-ratelimit/v3 v3.1.0
-	github.com/krakendio/krakend-rss/v2 v2.0.1
-	github.com/krakendio/krakend-xml/v2 v2.1.0
-	github.com/luraproject/lura/v2 v2.7.0
+	github.com/krakend/bloomfilter/v2 v2.1.0
+	github.com/krakend/krakend-botdetector/v2 v2.3.0
+	github.com/krakend/krakend-circuitbreaker/v2 v2.1.0
+	github.com/krakend/krakend-cors/v2 v2.2.0
+	github.com/krakend/krakend-gelf/v2 v2.1.0
+	github.com/krakend/krakend-gologging/v2 v2.1.1
+	github.com/krakend/krakend-httpcache/v2 v2.2.0
+	github.com/krakend/krakend-httpsecure/v2 v2.2.0
+	github.com/krakend/krakend-jose/v2 v2.9.0
+	github.com/krakend/krakend-logstash/v2 v2.1.0
+	github.com/krakend/krakend-lua/v2 v2.9.0
+	github.com/krakend/krakend-metrics/v2 v2.1.0
+	github.com/krakend/krakend-opencensus/v2 v2.2.0
+	github.com/krakend/krakend-ratelimit/v3 v3.3.0
+	github.com/krakend/krakend-rss/v2 v2.1.1
+	github.com/krakend/krakend-xml/v2 v2.2.0
+	github.com/luraproject/lura/v2 v2.11.0
 	github.com/mitchellh/mapstructure v1.5.0
 )
 
@@ -57,8 +57,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.30.3 // indirect
 	github.com/aws/smithy-go v1.20.3 // indirect
-	github.com/bytedance/sonic v1.11.6 // indirect
-	github.com/bytedance/sonic/loader v0.1.1 // indirect
+	github.com/bytedance/sonic v1.12.5 // indirect
+	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/cenkalti/backoff/v3 v3.2.2 // indirect
 	github.com/clbanning/mxj v1.8.4 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
@@ -67,7 +67,7 @@ require (
 	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.7 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.9.1 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.4 // indirect
@@ -76,9 +76,9 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/go-playground/validator/v10 v10.20.0 // indirect
+	github.com/go-playground/validator/v10 v10.23.0 // indirect
 	github.com/go-test/deep v1.1.0 // indirect
-	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/goccy/go-json v0.10.4 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/s2a-go v0.1.8 // indirect
@@ -99,12 +99,12 @@ require (
 	github.com/hashicorp/vault/api v1.14.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.9 // indirect
+	github.com/krakend/binder v0.0.0-20250826131726-e91a8a754ef8 // indirect
+	github.com/krakend/flatmap v1.2.0 // indirect
 	github.com/krakend/go-auth0/v2 v2.0.1 // indirect
+	github.com/krakend/httpcache v1.1.0 // indirect
 	github.com/krakend/lru v0.0.0-20250121172718-0e3a6eab620d // indirect
-	github.com/krakendio/binder v0.0.0-20241115150014-29ceb1a9414b // indirect
-	github.com/krakendio/flatmap v1.1.1 // indirect
-	github.com/krakendio/httpcache v0.0.0-20221129153752-65a87a5c2bc5 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
@@ -115,7 +115,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7 // indirect
-	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
+	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
@@ -130,7 +130,7 @@ require (
 	github.com/tmthrgd/go-popcount v0.0.0-20190904054823-afb1ace8b04f // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
-	github.com/unrolled/secure v1.13.0 // indirect
+	github.com/unrolled/secure v1.15.0 // indirect
 	github.com/valyala/fastrand v1.1.0 // indirect
 	github.com/yuin/gopher-lua v1.1.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
@@ -141,21 +141,21 @@ require (
 	go.opentelemetry.io/otel/trace v1.28.0 // indirect
 	gocloud.dev v0.39.0 // indirect
 	gocloud.dev/secrets/hashivault v0.39.0 // indirect
-	golang.org/x/arch v0.8.0 // indirect
-	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/net v0.38.0 // indirect
+	golang.org/x/arch v0.18.0 // indirect
+	golang.org/x/crypto v0.39.0 // indirect
+	golang.org/x/net v0.41.0 // indirect
 	golang.org/x/oauth2 v0.27.0 // indirect
-	golang.org/x/sync v0.12.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/sync v0.15.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/text v0.26.0 // indirect
 	golang.org/x/time v0.6.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240716161551-93cc26a95ae9 // indirect
 	google.golang.org/api v0.191.0 // indirect
 	google.golang.org/genproto v0.0.0-20240812133136-8ffd90a71988 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240812133136-8ffd90a71988 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240812133136-8ffd90a71988 // indirect
-	google.golang.org/grpc v1.65.0 // indirect
-	google.golang.org/protobuf v1.34.2 // indirect
+	google.golang.org/grpc v1.66.0 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/Graylog2/go-gelf.v2 v2.0.0-20191017102106-1550ee647df0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
