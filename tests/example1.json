@@ -272,6 +272,98 @@
       ]
     },
     {
+      "endpoint": "/gemini-default",
+      "method": "POST",
+      "backend": [
+        {
+          "host": [
+            "https://generativelanguage.googleapis.com"
+          ],
+          "url_pattern": "/v1beta/models/gemini-2.5-flash:generateContent",
+          "method": "POST",
+          "extra_config": {
+            "ai/llm": {
+              "gemini": {
+                "v1beta": {
+                  "credentials": "xxx"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/openai-custom-in",
+      "method": "POST",
+      "backend": [
+        {
+          "host": [
+            "https://api.openai.com"
+          ],
+          "url_pattern": "/v1/responses",
+          "method": "POST",
+          "extra_config": {
+            "ai/llm": {
+              "openai": {
+                "v1": {
+                  "credentials": "xxx",
+                  "input_template": "xxx"
+                }
+                
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/mistral-custom-out",
+      "method": "POST",
+      "backend": [
+        {
+          "host": [
+            "https://api.mistral.ai"
+          ],
+          "url_pattern": "/v1/chat/completions",
+          "method": "POST",
+          "extra_config": {
+            "ai/llm": {
+              "mistral": {
+                "v1": {
+                  "credentials": "xxx",
+                  "output_template": "xxx"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/anthropic-custom-in-out",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/v1/messages",
+          "host": [
+            "https://api.anthropic.com"
+          ],
+          "extra_config": {
+            "ai/llm": {
+              "anthropic": {
+                "v1": {
+                  "input_template": "xxx",
+                  "output_template": "xxx",
+                  "credentials": "xxx"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "endpoint": "/__catchall",
       "timeout": "10s",
       "extra_config": {
