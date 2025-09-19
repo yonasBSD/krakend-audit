@@ -682,18 +682,26 @@ func parseComponents(cfg config.ExtraConfig) Component { // skipcq: GO-R1005
 				components[c] = []int{}
 				continue
 			}
-			providers := []string{"gemini", "openai", "mistral", "anthropic"}
+
+			providers := [][]string{{"gemini", "v1beta"}, {"openai", "v1"}, {"mistral", "v1"}, {"anthropic", "v1"}}
 			for i, pr := range providers {
 				p := 0
 				customInput := 0
 				customOutput := 0
-				if prCfg, ok := cfg[pr].(map[string]interface{}); ok {
-					p = addBit(p, i)
-					if input, ok := prCfg["input_template"].(string); ok && input != "" {
-						customInput = 1
-					}
-					if output, ok := prCfg["output_template"].(string); ok && output != "" {
-						customOutput = 1
+				if prCfg, providerFound := cfg[pr[0]].(map[string]interface{}); providerFound {
+					versions := pr[1:]
+					for _, v := range versions {
+						vCfg, versionFound := prCfg[v].(map[string]interface{})
+						if !versionFound {
+							continue
+						}
+						p = addBit(p, i)
+						if input, ok := vCfg["input_template"].(string); ok && input != "" {
+							customInput = 1
+						}
+						if output, ok := vCfg["output_template"].(string); ok && output != "" {
+							customOutput = 1
+						}
 					}
 
 					components[c] = []int{p, customInput, customOutput}

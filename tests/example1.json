@@ -284,9 +284,9 @@
           "extra_config": {
             "ai/llm": {
               "gemini": {
-                "credentials": "xxx",
-                "version": "v1beta",
-                "variables": {}
+                "v1beta": {
+                  "credentials": "xxx"
+                }
               }
             }
           }
@@ -306,10 +306,11 @@
           "extra_config": {
             "ai/llm": {
               "openai": {
-                "credentials": "xxx",
-                "input_template": "xxx",
-                "version": "v1",
-                "variables": {}
+                "v1": {
+                  "credentials": "xxx",
+                  "input_template": "xxx"
+                }
+                
               }
             }
           }
@@ -329,10 +330,10 @@
           "extra_config": {
             "ai/llm": {
               "mistral": {
-                "credentials": "xxx",
-                "output_template": "xxx",
-                "version": "v1",
-                "variables": {}
+                "v1": {
+                  "credentials": "xxx",
+                  "output_template": "xxx"
+                }
               }
             }
           }
@@ -351,11 +352,11 @@
           "extra_config": {
             "ai/llm": {
               "anthropic": {
-                "input_template": "xxx",
-                "output_template": "xxx",
-                "credentials": "xxx",
-                "version": "v1",
-                "variables": {}
+                "v1": {
+                  "input_template": "xxx",
+                  "output_template": "xxx",
+                  "credentials": "xxx"
+                }
               }
             }
           }
