@@ -134,11 +134,13 @@ require (
 	github.com/valyala/fastrand v1.1.0 // indirect
 	github.com/yuin/gopher-lua v1.1.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
+	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.53.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.53.0 // indirect
-	go.opentelemetry.io/otel v1.28.0 // indirect
-	go.opentelemetry.io/otel/metric v1.28.0 // indirect
-	go.opentelemetry.io/otel/trace v1.28.0 // indirect
+	go.opentelemetry.io/otel v1.33.0 // indirect
+	go.opentelemetry.io/otel/metric v1.33.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.33.0 // indirect
+	go.opentelemetry.io/otel/trace v1.33.0 // indirect
 	gocloud.dev v0.39.0 // indirect
 	gocloud.dev/secrets/hashivault v0.39.0 // indirect
 	golang.org/x/arch v0.18.0 // indirect

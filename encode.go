@@ -95,6 +95,7 @@ var componentAlias = map[string]string{
 	luaproxy.BackendNamespace:          "8",
 	luarouter.Namespace:                "9",
 	httpcache.Namespace:                "10",
+	"ai/llm":                           "11",
 }
 
 func applyAlias(s Service) Service {

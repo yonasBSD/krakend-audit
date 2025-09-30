@@ -98,6 +98,8 @@ func (c Component) Clone() Component {
 	return res
 }
 
+var AiProviders = [][]string{{"gemini", "v1beta"}, {"openai", "v1"}, {"mistral", "v1"}, {"anthropic", "v1"}}
+
 const (
 	ServicePlugin = iota
 	ServiceSequentialStart
