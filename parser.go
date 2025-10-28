@@ -676,6 +676,37 @@ func parseComponents(cfg config.ExtraConfig) Component { // skipcq: GO-R1005
 				f = addBit(f, 2)
 			}
 			components[c] = []int{f}
+		case "ai/mcp":
+			cfg, ok := v.(map[string]interface{})
+			if !ok {
+				components[c] = []int{}
+				continue
+			}
+			if server, ok := cfg["server_name"].(string); ok && server != "" {
+				// This is an endpoint, so we just note its presence
+				components[c] = []int{}
+				continue
+			}
+
+			numServers := 0
+			numTools := 0
+			servers, serversFound := cfg["servers"].([]interface{})
+			if !serversFound {
+				continue
+			}
+
+			for _, server := range servers {
+				server, ok := server.(map[string]interface{})
+				if !ok {
+					continue
+				}
+				numServers++
+
+				if tools, ok := server["tools"].([]interface{}); ok {
+					numTools += len(tools)
+				}
+			}
+			components[c] = []int{numServers, numTools}
 		case "ai/llm":
 			cfg, ok := v.(map[string]interface{})
 			if !ok {

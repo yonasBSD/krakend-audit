@@ -109,7 +109,64 @@
       "metric_reporting_period": 50,
       "trace_sample_rate": 1
     },
-    "auth/api-keys": {}
+    "auth/api-keys": {},
+    "ai/mcp": {
+      "servers": [
+        {
+          "name": "stories-tracker",
+          "title": "Story tracker tools",
+          "version": "0.2.1",
+          "tools": [
+            {
+              "name": "stories-list",
+              "title": "Story list",
+              "description": "Get a list of open stories in tracker matching a search query",
+              "workflow": {
+                "endpoint": "/workflow-1/{param1}",
+                "backend": [
+                  {
+                    "url_pattern": "/users"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "another-tool",
+              "title": "Another list",
+              "description": "Some weird crap",
+              "workflow": {
+                "endpoint": "/workflow-1/{param1}",
+                "backend": [
+                  {
+                    "url_pattern": "/crap"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "stories-tracker-2",
+          "title": "Story tracker tools 2",
+          "version": "0.2.2",
+          "tools": [
+            {
+              "name": "stories-list-2",
+              "title": "Story list 2",
+              "description": "Get a list of open stories in tracker matching a search query",
+              "workflow": {
+                "endpoint": "/workflow-2/{param1}",
+                "backend": [
+                  {
+                    "url_pattern": "/users-2"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
   },
   "tls": {
     "public_key": "/path/to/cert.pem",
@@ -252,7 +309,9 @@
           "ping_period": "54s",
           "timeout": "300s",
           "backoff_strategy": "exponential",
-          "subprotocols": ["streamlit"]
+          "subprotocols": [
+            "streamlit"
+          ]
         }
       }
     },
@@ -310,7 +369,6 @@
                   "credentials": "xxx",
                   "input_template": "xxx"
                 }
-                
               }
             }
           }
@@ -362,6 +420,62 @@
           }
         }
       ]
+    },
+    {
+      "endpoint": "/mcp1",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/ignored"
+        }
+      ],
+      "extra_config": {
+        "ai/mcp": {
+          "server_name": "stories-tracker"
+        }
+      }
+    },
+    {
+      "endpoint": "/mcp1",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/ignored"
+        }
+      ],
+      "extra_config": {
+        "ai/mcp": {
+          "server_name": "stories-tracker"
+        }
+      }
+    },
+    {
+      "endpoint": "/mcp1",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/ignored"
+        }
+      ],
+      "extra_config": {
+        "ai/mcp": {
+          "server_name": "stories-tracker"
+        }
+      }
+    },
+    {
+      "endpoint": "/mcp2",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/ignored"
+        }
+      ],
+      "extra_config": {
+        "ai/mcp": {
+          "server_name": "stories-tracker-2"
+        }
+      }
     },
     {
       "endpoint": "/__catchall",

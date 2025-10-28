@@ -96,6 +96,7 @@ var componentAlias = map[string]string{
 	luarouter.Namespace:                "9",
 	httpcache.Namespace:                "10",
 	"ai/llm":                           "11",
+	"ai/mcp":                           "12",
 }
 
 func applyAlias(s Service) Service {
