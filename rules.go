@@ -46,7 +46,7 @@ func hasBasicAuth(s *Service) bool {
 	return false
 }
 
-func hasTelemetryMissingName(s *Service) bool {
+func hasTelemetryMissingName(_ *Service) bool {
 	// TODO: implement this check
 	return false
 }
